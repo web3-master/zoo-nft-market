@@ -1,2 +1,2 @@
-# My NFT Market
-Simple but full fledged NFT market.
+# Zoo NFT Market
+Simple but full fledged NFT market for all animals in the zoo.
