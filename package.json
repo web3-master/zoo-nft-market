@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Simple but full fledged NFT market for all animals in the zoo.",
   "scripts": {
-    "chain": "npx run chain --workspace zoo-nft-contract",
-    "deploy-local": "npx run deploy-local --workspace zoo-nft-contract",
+    "chain": "npm run chain --workspace zoo-nft-contract",
+    "deploy-local": "npm run deploy-local --workspace zoo-nft-contract",
     "start": "npm run start --workspace zoo-nft-dapp"
   },
   "repository": {

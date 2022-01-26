@@ -64,3 +64,10 @@ yarn-error.log*
 .netlify
 *.tsbuildinfo
 *.stackdump
+packages/zoo-nft-dapp/src/contract-abis/localhost/MyNftMarketplace.json
+packages/zoo-nft-dapp/src/contract-abis/localhost/MyNftCollection.json
+packages/zoo-nft-contract/deployments/localhost/MyNftMarketplace.json
+packages/zoo-nft-contract/deployments/localhost/MyNftCollection.json
+packages/zoo-nft-contract/deployments/localhost/solcInputs/6667f28160b2c4f40187a2847e172f37.json
+packages/zoo-nft-dapp/src/contract-abis/localhost/MyNftCollection.json
+packages/zoo-nft-dapp/src/contract-abis/localhost/MyNftMarketplace.json

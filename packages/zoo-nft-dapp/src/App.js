@@ -8,8 +8,7 @@ import web3 from "./web3/connection/web3";
 import Web3Context from "./web3/store/web3-context";
 import CollectionContext from "./web3/store/collection-context";
 import MarketplaceContext from "./web3/store/marketplace-context";
-import NFTCollection from "./contract-abis/localhost/MyNftCollection.json";
-import NFTMarketplace from "./contract-abis/localhost/MyNftMarketplace.json";
+import ZooNftContracts from "./contract-abis/localhost/zoo-nft-contracts.json";
 import { notification } from "antd";
 
 function App() {
@@ -43,6 +42,7 @@ function App() {
       // const networkId = await web3Ctx.loadNetworkId(web3);
 
       // const nftDeployedNetwork = NFTCollection.networks[networkId];
+      const NFTCollection = ZooNftContracts.contracts.MyNftCollection;
       const nftContract = collectionCtx.loadContract(
         web3,
         NFTCollection
@@ -50,6 +50,7 @@ function App() {
       );
 
       // const mktDeployedNetwork = NFTMarketplace.networks[networkId];
+      const NFTMarketplace = ZooNftContracts.contracts.MyNftMarketplace;
       const mktContract = marketplaceCtx.loadContract(
         web3,
         NFTMarketplace
