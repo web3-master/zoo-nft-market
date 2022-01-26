@@ -1,0 +1,25 @@
+{
+  "name": "zoo-nft-market",
+  "version": "1.0.0",
+  "description": "Simple but full fledged NFT market for all animals in the zoo.",
+  "scripts": {
+    "chain": "npx run chain --workspace zoo-nft-contract",
+    "deploy-local": "npx run deploy-local --workspace zoo-nft-contract",
+    "start": "npm run start --workspace zoo-nft-dapp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dany-armstrong/zoo-nft-market.git"
+  },
+  "keywords": [
+    "nft",
+    "zoo"
+  ],
+  "author": "daniel armstrong",
+  "license": "BSL-1.0",
+  "bugs": {
+    "url": "https://github.com/dany-armstrong/zoo-nft-market/issues"
+  },
+  "homepage": "https://github.com/dany-armstrong/zoo-nft-market#readme",
+  "workspaces": ["./packages/*"]
+}
