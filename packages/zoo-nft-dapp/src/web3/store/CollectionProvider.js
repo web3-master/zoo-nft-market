@@ -131,6 +131,7 @@ const CollectionProvider = (props) => {
           {
             id: i + 1,
             title: metadata.properties.name.description,
+            description: metadata.properties.description.description,
             img: metadata.properties.image.description,
             owner: owner,
           },
@@ -160,6 +161,7 @@ const CollectionProvider = (props) => {
       NFT = {
         id: parseInt(id),
         title: metadata.properties.name.description,
+        description: metadata.properties.description.description,
         img: metadata.properties.image.description,
         owner: owner,
       };

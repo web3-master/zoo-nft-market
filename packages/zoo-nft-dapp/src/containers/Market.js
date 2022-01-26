@@ -8,6 +8,7 @@ import {
   Col,
   List,
   notification,
+  Image,
 } from "antd";
 import { createRef, useContext, useRef, useState } from "react";
 import web3 from "../web3/connection/web3";
@@ -96,8 +97,9 @@ const Market = () => {
   const renderItem = (nft, key) => {
     return (
       <List.Item>
-        <Card title={nft.id}>
-          <span>{nft.title}</span>
+        <Card title={"#" + nft.title}>
+          <Image src={`https://ipfs.infura.io/ipfs/${nft.img}`} />
+          <span>{nft.description}</span>
         </Card>
       </List.Item>
     );
