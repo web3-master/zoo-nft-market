@@ -8,7 +8,8 @@ import web3 from "./web3/connection/web3";
 import Web3Context from "./web3/store/web3-context";
 import CollectionContext from "./web3/store/collection-context";
 import MarketplaceContext from "./web3/store/marketplace-context";
-import ZooNftContracts from "./contract-abis/localhost/zoo-nft-contracts.json";
+// import ZooNftContracts from "./contract-abis/localhost/zoo-nft-contracts.json";
+import ZooNftContracts from "./contract-abis/ropsten/zoo-nft-contracts.json";
 import { notification } from "antd";
 
 function App() {
