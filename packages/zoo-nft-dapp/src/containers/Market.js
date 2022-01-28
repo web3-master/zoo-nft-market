@@ -11,6 +11,7 @@ import {
   Image,
 } from "antd";
 import { createRef, useContext, useRef, useState } from "react";
+import MarketItem from "../components/MarketItem";
 import web3 from "../web3/connection/web3";
 import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
@@ -42,7 +43,7 @@ const Market = () => {
       .on("transactionHash", (hash) => {
         marketplaceCtx.setMktIsLoading(true);
       })
-      .on("receipt", (receipt) => {
+      .on("confirmation", (confirmationNumber, receipt) => {
         marketplaceCtx.contract.methods
           .makeOffer(id, enteredPrice)
           .send({ from: web3Ctx.account })
@@ -95,20 +96,13 @@ const Market = () => {
   };
 
   const renderItem = (nft, key) => {
-    return (
-      <List.Item>
-        <Card title={"#" + nft.title}>
-          <Image src={`https://ipfs.infura.io/ipfs/${nft.img}`} />
-          <span>{nft.description}</span>
-        </Card>
-      </List.Item>
-    );
+    return <MarketItem nft={nft} />;
   };
 
   return (
     <Row style={{ margin: 60 }}>
       <Col span={24}>
-        <Card title="All NFTs">
+        <Card title={"All NFT (Total " + collectionCtx.collection.length + ")"}>
           <List
             grid={{ gutter: 8, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
             locale={{ emptyText: "There's nothing to show!" }}
