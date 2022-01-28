@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Zoo NFT Market",
+  "name": "Simple but full fledged NFT market for all animals in the zoo.",
   "icons": [
     {
       "src": "favicon.ico",

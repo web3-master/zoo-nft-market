@@ -4,7 +4,7 @@ import Market from "../containers/Market";
 import Minter from "../containers/Minter";
 import AppMenu from "../menu/AppMenu";
 import Account from "../components/Account";
-import logo from "../images/opensea.png";
+import logo from "../images/zoo.png";
 import { Route, Routes } from "react-router-dom";
 import web3 from "../web3/connection/web3";
 import Web3Context from "../web3/store/web3-context";
@@ -19,7 +19,7 @@ const AppLayout = () => {
 
   return (
     <Row>
-      <Col span={18} offset={3}>
+      <Col span={24}>
         <Layout style={{ minHeight: "100vh" }}>
           <Header>
             <Row align="stretch" gutter={20}>
@@ -28,7 +28,7 @@ const AppLayout = () => {
               </Col>
               <Col>
                 <h1>
-                  <font color="white">NFT Market</font>
+                  <font color="white">Zoo NFT Market</font>
                 </h1>
               </Col>
               <Col flex="auto"></Col>
