@@ -54,7 +54,7 @@ const AppLayout = () => {
               bottom: 0,
             }}
           >
-            All rights reserved by Daniel Armstrong.
+            © 2022 All rights reserved by Daniel Armstrong.
           </Footer>
         </Layout>
       </Col>

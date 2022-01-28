@@ -112,7 +112,7 @@ const Market = () => {
   };
 
   return (
-    <Row style={{ margin: 60 }}>
+    <Row style={{ margin: 20 }}>
       {collectionCtx.nftIsLoading && (
         <Col span={24}>
           <Alert message="Loading items..." type="info" showIcon />
@@ -124,16 +124,16 @@ const Market = () => {
         </Col>
       )}
       <Col span={24} style={{ marginTop: 10 }}>
-        <Card title={"All NFT (Total " + collectionCtx.collection.length + ")"}>
+        <Card title={"All NFT Items"}>
           {collectionCtx.nftIsLoading ? (
             <Skeleton />
           ) : (
             <List
-              grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
+              grid={{ gutter: 32, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
               locale={{ emptyText: "There's nothing to show!" }}
               dataSource={collectionCtx.collection}
               renderItem={renderItem}
-              pagination={{ position: "bottom", pageSize: 12 }}
+              pagination={{ position: "bottom", pageSize: 8 }}
             />
           )}
         </Card>

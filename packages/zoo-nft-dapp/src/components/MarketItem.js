@@ -17,6 +17,7 @@ import MarketplaceContext from "../web3/store/marketplace-context";
 import Web3Context from "../web3/store/web3-context";
 import web3 from "../web3/connection/web3";
 import { formatPrice } from "../helpers/utils";
+import "./MarketItem.css";
 
 const MarketItem = ({ nft }) => {
   const web3Ctx = useContext(Web3Context);
@@ -98,14 +99,19 @@ const MarketItem = ({ nft }) => {
       <Card
         hoverable
         cover={
-          //   <div style={{ height: "200px", overflow: "hidden" }}>
-          <Image src={`https://ipfs.infura.io/ipfs/${nft.img}`} />
-          //   </div>
+          <div style={{ height: "200px", overflow: "hidden" }}>
+            <Image src={`https://ipfs.infura.io/ipfs/${nft.img}`} />
+          </div>
         }
-        bodyStyle={{ padding: 0 }}
+        bodyStyle={{ paddingLeft: 10, paddingRight: 10, paddingTop: 20 }}
       >
-        <Card.Meta title={nft.title} description={nft.description} />
-        {index !== -1 ? (
+        <Card.Meta
+          title={nft.title}
+          description={
+            <div className="Meta-description">{nft.description}</div>
+          }
+        />
+        {/* {index !== -1 ? (
           owner !== web3Ctx.account ? (
             <Row>
               <Col flex={1}>
@@ -147,7 +153,7 @@ const MarketItem = ({ nft }) => {
           </Form>
         ) : (
           <p></p>
-        )}
+        )} */}
       </Card>
     </List.Item>
   );
