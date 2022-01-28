@@ -42,19 +42,19 @@ const MarketItem = ({ nft }) => {
         marketplaceCtx.setMktIsLoading(true);
       })
       .on("confirmation", (confirmationNumber, receipt) => {
-        console.log("approve.confirmation");
-        console.log(JSON.stringify(receipt));
-        marketplaceCtx.contract.methods
-          .makeOffer(nft.id, enteredPrice)
-          .send({ from: web3Ctx.account })
-          .on("error", (error) => {
-            notification["error"]({
-              message: "Error",
-              description:
-                "Something went wrong when pushing to the blockchain",
+        if (confirmationNumber == 0) {
+          marketplaceCtx.contract.methods
+            .makeOffer(nft.id, enteredPrice)
+            .send({ from: web3Ctx.account })
+            .on("error", (error) => {
+              notification["error"]({
+                message: "Error",
+                description:
+                  "Something went wrong when pushing to the blockchain",
+              });
+              marketplaceCtx.setMktIsLoading(false);
             });
-            marketplaceCtx.setMktIsLoading(false);
-          });
+        }
       });
   };
 

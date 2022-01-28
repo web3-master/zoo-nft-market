@@ -9,6 +9,8 @@ import {
   List,
   notification,
   Image,
+  Skeleton,
+  Alert,
 } from "antd";
 import { createRef, useContext, useRef, useState } from "react";
 import MarketItem from "../components/MarketItem";
@@ -44,17 +46,19 @@ const Market = () => {
         marketplaceCtx.setMktIsLoading(true);
       })
       .on("confirmation", (confirmationNumber, receipt) => {
-        marketplaceCtx.contract.methods
-          .makeOffer(id, enteredPrice)
-          .send({ from: web3Ctx.account })
-          .on("error", (error) => {
-            notification["error"]({
-              message: "Error",
-              description:
-                "Something went wrong when pushing to the blockchain",
+        if (confirmationNumber == 0) {
+          marketplaceCtx.contract.methods
+            .makeOffer(id, enteredPrice)
+            .send({ from: web3Ctx.account })
+            .on("error", (error) => {
+              notification["error"]({
+                message: "Error",
+                description:
+                  "Something went wrong when pushing to the blockchain",
+              });
+              marketplaceCtx.setMktIsLoading(false);
             });
-            marketplaceCtx.setMktIsLoading(false);
-          });
+        }
       });
   };
 
@@ -96,20 +100,42 @@ const Market = () => {
   };
 
   const renderItem = (nft, key) => {
-    return <MarketItem nft={nft} />;
+    if (Object.keys(nft).length == 0) {
+      return (
+        <List.Item>
+          <Skeleton active />
+        </List.Item>
+      );
+    } else {
+      return <MarketItem nft={nft} />;
+    }
   };
 
   return (
     <Row style={{ margin: 60 }}>
-      <Col span={24}>
+      {collectionCtx.nftIsLoading && (
+        <Col span={24}>
+          <Alert message="Loading items..." type="info" showIcon />
+        </Col>
+      )}
+      {!collectionCtx.nftIsLoading && marketplaceCtx.mktIsLoading && (
+        <Col span={24}>
+          <Alert message="Processing request..." type="info" showIcon />
+        </Col>
+      )}
+      <Col span={24} style={{ marginTop: 10 }}>
         <Card title={"All NFT (Total " + collectionCtx.collection.length + ")"}>
-          <List
-            grid={{ gutter: 8, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
-            locale={{ emptyText: "There's nothing to show!" }}
-            dataSource={collectionCtx.collection}
-            renderItem={renderItem}
-            pagination={{ position: "bottom", pageSize: 12 }}
-          />
+          {collectionCtx.nftIsLoading ? (
+            <Skeleton />
+          ) : (
+            <List
+              grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
+              locale={{ emptyText: "There's nothing to show!" }}
+              dataSource={collectionCtx.collection}
+              renderItem={renderItem}
+              pagination={{ position: "bottom", pageSize: 12 }}
+            />
+          )}
         </Card>
       </Col>
     </Row>

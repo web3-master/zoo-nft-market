@@ -7,6 +7,7 @@ import {
   Row,
   Col,
   notification,
+  Alert,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { UploadOutlined } from "@ant-design/icons";
@@ -97,7 +98,12 @@ const Minter = () => {
 
   return (
     <Row style={{ margin: 60 }}>
-      <Col span={24}>
+      {collectionCtx.nftIsLoading && (
+        <Col span={24}>
+          <Alert message="Minting..." type="info" showIcon />
+        </Col>
+      )}
+      <Col span={24} style={{ marginTop: 10 }}>
         <Card title="Create your own NFT!">
           <Form
             form={form}

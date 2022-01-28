@@ -112,7 +112,16 @@ const CollectionProvider = (props) => {
   };
 
   const loadCollectionHandler = async (contract, totalSupply) => {
-    let collection = [];
+    var collection = [];
+    for (var i = 0; i < totalSupply; i++) {
+      collection.push({});
+    }
+    dispatchCollectionAction({
+      type: "LOADCOLLECTION",
+      collection: collection,
+    });
+
+    collection = [];
 
     for (let i = 0; i < totalSupply; i++) {
       const hash = await contract.methods.tokenURIs(i).call();
