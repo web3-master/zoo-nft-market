@@ -43,14 +43,14 @@ const Detail = () => {
     }
 
     try {
-      const hash = await contract.methods.tokenURI(id - 1).call();
+      const hash = await contract.methods.tokenURI(id).call();
       const response = await fetch(`https://ipfs.infura.io/ipfs/${hash}?clear`);
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
 
       const metadata = await response.json();
-      const owner = await contract.methods.ownerOf(id - 1).call();
+      const owner = await contract.methods.ownerOf(id).call();
 
       setNft({
         id: parseInt(id),
