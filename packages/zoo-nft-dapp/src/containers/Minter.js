@@ -46,6 +46,20 @@ const Minter = () => {
   };
 
   const onCreate = async (values) => {
+    if (web3Ctx.account == null) {
+      try {
+        await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+      } catch (error) {
+        notification["error"]({
+          message: "Error",
+          description: error,
+        });
+      }
+      return;
+    }
+
     let { name, description } = values;
 
     setUploading(true);

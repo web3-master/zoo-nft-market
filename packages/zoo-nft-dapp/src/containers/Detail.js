@@ -107,7 +107,21 @@ const Detail = () => {
     );
   };
 
-  const buy = () => {
+  const buy = async () => {
+    if (web3Ctx.account == null) {
+      try {
+        await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+      } catch (error) {
+        notification["error"]({
+          message: "Error",
+          description: error,
+        });
+      }
+      return;
+    }
+
     marketplaceCtx.contract.methods
       .fillOffer(offer.offerId)
       .send({

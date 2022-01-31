@@ -16,6 +16,7 @@ const Account = () => {
     if (isConnected) {
       navigate("/profile");
     } else {
+      navigate("/market");
       window.location.reload();
     }
   };
