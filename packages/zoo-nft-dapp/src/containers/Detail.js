@@ -36,13 +36,32 @@ const Detail = () => {
   const [offer, setOffer] = useState(null);
   const [invalidId, setInvalidId] = useState(false);
 
-  const loadNft = () => {
-    let nft = collectionCtx.collection.find((value) => value.id == id);
-    if (nft == undefined) {
-      setInvalidId(true);
+  const loadNft = async () => {
+    let contract = collectionCtx.contract;
+    if (contract == null) {
       return;
     }
-    setNft(nft);
+
+    try {
+      const hash = await contract.methods.tokenURI(id - 1).call();
+      const response = await fetch(`https://ipfs.infura.io/ipfs/${hash}?clear`);
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const metadata = await response.json();
+      const owner = await contract.methods.ownerOf(id - 1).call();
+
+      setNft({
+        id: parseInt(id),
+        title: metadata.properties.name.description,
+        description: metadata.properties.description.description,
+        img: metadata.properties.image.description,
+        owner: owner,
+      });
+    } catch (error) {
+      setInvalidId(true);
+    }
   };
 
   const loadOffer = () => {
@@ -59,7 +78,7 @@ const Detail = () => {
 
   const owner = offer == null ? (nft != null ? nft.owner : "") : offer.user;
 
-  if (invalidId) {
+  if (!collectionCtx.nftIsLoading && invalidId) {
     return (
       <Result
         status="warning"
@@ -75,10 +94,6 @@ const Detail = () => {
         }
       />
     );
-  }
-
-  if (nft == null) {
-    return <Skeleton active />;
   }
 
   const renderBuy = () => {
