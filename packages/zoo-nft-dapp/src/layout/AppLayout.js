@@ -36,7 +36,7 @@ const AppLayout = () => {
               <Col>
                 <AppMenu />
               </Col>
-              <Col>
+              <Col span={1} style={{ marginRight: 10 }}>
                 <Account />
               </Col>
             </Row>
