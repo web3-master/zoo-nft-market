@@ -12,6 +12,7 @@ import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
 import { useContext } from "react";
 import Profile from "../containers/Profile";
+import Detail from "../containers/Detail";
 
 const AppLayout = () => {
   const web3Ctx = useContext(Web3Context);
@@ -46,6 +47,7 @@ const AppLayout = () => {
               <Route path="/market" element={<Market />} />
               <Route path="/mint" element={<Minter />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/detail/:id" element={<Detail />} />
             </Routes>
           </Content>
           <Footer
