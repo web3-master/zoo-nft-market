@@ -60,6 +60,15 @@ const Minter = () => {
       return;
     }
 
+    if (web3Ctx.networkId != 3) {
+      notification["error"]({
+        message: "Error",
+        description:
+          "This network is not supported. Please connect to Ropsten network in MetaMask!",
+      });
+      return;
+    }
+
     let { name, description } = values;
 
     setUploading(true);

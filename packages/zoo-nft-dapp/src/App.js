@@ -27,6 +27,10 @@ function App() {
       return;
     }
 
+    window.ethereum.on("chainChanged", (chainId) => {
+      window.location.reload();
+    });
+
     const initWeb3 = async () => {
       try {
         await window.ethereum.request({
@@ -40,7 +44,14 @@ function App() {
       }
 
       const account = await web3Ctx.loadAccount(web3);
-      // const networkId = await web3Ctx.loadNetworkId(web3);
+      const networkId = await web3Ctx.loadNetworkId(web3);
+      if (ZooNftContracts.chainId != networkId) {
+        notification["error"]({
+          message: "Error",
+          description: `This network is not supported. Please connect to ${ZooNftContracts.name} in MetaMask!`,
+        });
+        return;
+      }
 
       // const nftDeployedNetwork = NFTCollection.networks[networkId];
       const NFTCollection = ZooNftContracts.contracts.MyNftCollection;
@@ -150,10 +161,6 @@ function App() {
       window.ethereum.on("accountsChanged", (accounts) => {
         web3Ctx.loadAccount(web3);
         accounts[0] && marketplaceCtx.loadUserFunds(mktContract, accounts[0]);
-      });
-
-      window.ethereum.on("chainChanged", (chainId) => {
-        window.location.reload();
       });
     };
 

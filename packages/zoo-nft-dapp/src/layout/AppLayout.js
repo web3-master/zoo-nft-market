@@ -13,6 +13,7 @@ import MarketplaceContext from "../web3/store/marketplace-context";
 import { useContext } from "react";
 import Profile from "../containers/Profile";
 import Detail from "../containers/Detail";
+import WrongNetwork from "../containers/WrongNetwork";
 
 const AppLayout = () => {
   const web3Ctx = useContext(Web3Context);
@@ -33,22 +34,24 @@ const AppLayout = () => {
                 </h1>
               </Col>
               <Col flex="auto"></Col>
-              <Col>
-                <AppMenu />
-              </Col>
+              <Col>{web3Ctx.networkId == 3 && <AppMenu />}</Col>
               <Col span={1} style={{ marginRight: 10 }}>
                 <Account />
               </Col>
             </Row>
           </Header>
           <Content>
-            <Routes>
-              <Route path="/" element={<Market />} />
-              <Route path="/market" element={<Market />} />
-              <Route path="/mint" element={<Minter />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/detail/:id" element={<Detail />} />
-            </Routes>
+            {web3Ctx.networkId == 3 ? (
+              <Routes>
+                <Route path="/" element={<Market />} />
+                <Route path="/market" element={<Market />} />
+                <Route path="/mint" element={<Minter />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/detail/:id" element={<Detail />} />
+              </Routes>
+            ) : (
+              <WrongNetwork />
+            )}
           </Content>
           <Footer
             style={{

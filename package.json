@@ -23,5 +23,7 @@
     "url": "https://github.com/dany-armstrong/zoo-nft-market/issues"
   },
   "homepage": "https://github.com/dany-armstrong/zoo-nft-market#readme",
-  "workspaces": ["./packages/*"]
+  "workspaces": [
+    "./packages/*"
+  ]
 }
