@@ -43,10 +43,10 @@ contract MyNftMarketplace {
         require(!_offer.fulfilled, 'An offer cannot be fulfilled twice');
         require(!_offer.cancelled, 'A cancelled offer cannot be fulfilled');
         require(msg.value == _offer.price, 'The ETH amount should match with the NFT price');
-        nftCollection.transferFrom(address(this), msg.sender, _offer.id);
         _offer.fulfilled = true;
         userFunds[_offer.user] += msg.value;
         emit OfferFilled(_offerId, _offer.id, msg.sender);
+        nftCollection.transferFrom(address(this), msg.sender, _offer.id);
     }
 
     function cancelOffer(uint _offerId) public {
@@ -55,16 +55,16 @@ contract MyNftMarketplace {
         require(_offer.user == msg.sender, 'The offer can only be cancelled by the owner');
         require(_offer.fulfilled == false, 'A fulfilled offer cannot be cancelled');
         require(_offer.cancelled == false, 'A offer cannot be cancelled twice');
-        nftCollection.transferFrom(address(this), msg.sender, _offer.id);
         _offer.cancelled = true;
         emit OfferCancelled(_offerId, _offer.id, msg.sender);
+        nftCollection.transferFrom(address(this), msg.sender, _offer.id);
     }
 
     function claimFunds() public {
         require(userFunds[msg.sender] > 0, 'This user has no funds to be claimed');
-        payable(msg.sender).transfer(userFunds[msg.sender]);
         emit ClaimFunds(msg.sender, userFunds[msg.sender]);
         userFunds[msg.sender] = 0;
+        payable(msg.sender).transfer(userFunds[msg.sender]);
     }
 
     fallback() external {

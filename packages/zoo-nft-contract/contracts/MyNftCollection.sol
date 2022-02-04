@@ -30,7 +30,7 @@ contract MyNftCollection is ERC721, ERC721Enumerable {
         tokenURIs.push(_tokenURI);
         uint _id = tokenURIs.length;
         _tokenIdToTokenURI[_id] = _tokenURI;
-        _safeMint(msg.sender, _id);
         _tokenURIExists[_tokenURI] = true;
+        _safeMint(msg.sender, _id);
     }
 }

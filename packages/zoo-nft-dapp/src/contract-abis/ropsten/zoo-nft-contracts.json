@@ -3,7 +3,7 @@
   "chainId": "3",
   "contracts": {
     "MyNftCollection": {
-      "address": "0x5fEe2df960616CBAAa28ec83Bcb11b4fbbdaCFd2",
+      "address": "0x30E845d430048a2d264Fc275992a0E0cE6e680bE",
       "abi": [
         {
           "inputs": [],
@@ -431,7 +431,7 @@
       ]
     },
     "MyNftMarketplace": {
-      "address": "0x9D403E7420aD6744E539a458032679E65414Cbba",
+      "address": "0x7bC4ca45d6A693592f29532f318EaA5F5844b8e4",
       "abi": [
         {
           "inputs": [
