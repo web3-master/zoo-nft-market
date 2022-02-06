@@ -176,6 +176,13 @@ const MarketplaceProvider = (props) => {
     dispatchMarketplaceAction({ type: "LOADING", loading: loading });
   };
 
+  const getOfferHandler = (nftId) => {
+    const offer = MarketplaceState.offers
+      ? MarketplaceState.offers.find((offer) => offer.id == nftId)
+      : null;
+    return offer;
+  };
+
   const marketplaceContext = {
     contract: MarketplaceState.contract,
     offerCount: MarketplaceState.offerCount,
@@ -189,6 +196,7 @@ const MarketplaceProvider = (props) => {
     addOffer: addOfferHandler,
     loadUserFunds: loadUserFundsHandler,
     setMktIsLoading: setMktIsLoadingHandler,
+    getOffer: getOfferHandler,
   };
 
   return (

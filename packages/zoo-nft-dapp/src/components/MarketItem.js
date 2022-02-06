@@ -9,6 +9,7 @@ import {
   List,
   notification,
   Image,
+  Badge,
 } from "antd";
 import { PayCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useContext } from "react";
@@ -19,19 +20,21 @@ import web3 from "../web3/connection/web3";
 import { formatPrice } from "../helpers/utils";
 import "./MarketItem.css";
 import { useNavigate } from "react-router-dom";
+import ethImage from "../images/eth.png";
 
 const MarketItem = ({ nft }) => {
   const web3Ctx = useContext(Web3Context);
   const collectionCtx = useContext(CollectionContext);
   const marketplaceCtx = useContext(MarketplaceContext);
   let navigate = useNavigate();
+  let offer = marketplaceCtx.getOffer(nft.id);
 
   const onClick = () => {
     navigate("/detail/" + nft.id);
   };
 
-  return (
-    <List.Item onClick={onClick}>
+  const renderItemBody = () => {
+    return (
       <Card
         hoverable
         cover={
@@ -51,6 +54,18 @@ const MarketItem = ({ nft }) => {
           }
         />
       </Card>
+    );
+  };
+
+  return (
+    <List.Item onClick={onClick}>
+      {offer == null ? (
+        renderItemBody()
+      ) : (
+        <Badge.Ribbon text="In Sale" color="green">
+          {renderItemBody()}
+        </Badge.Ribbon>
+      )}
     </List.Item>
   );
 };

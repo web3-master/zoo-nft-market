@@ -65,9 +65,7 @@ const Detail = () => {
   };
 
   const loadOffer = () => {
-    const offer = marketplaceCtx.offers
-      ? marketplaceCtx.offers.find((offer) => offer.id == id)
-      : null;
+    const offer = marketplaceCtx.getOffer(id);
     setOffer(offer);
   };
 
