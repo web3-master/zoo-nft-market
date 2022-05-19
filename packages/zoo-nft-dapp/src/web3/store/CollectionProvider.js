@@ -90,16 +90,10 @@ const CollectionProvider = (props) => {
     defaultCollectionState
   );
 
-  const loadContractHandler = (web3, NFTCollection /*, deployedNetwork*/) => {
-    // const contract = deployedNetwork
-    //   ? new web3.eth.Contract(
-    //       NFTCollection.abi,
-    //       /*deployedNetwork*/ NFTCollection.address
-    //     )
-    //   : "";
+  const loadContractHandler = (web3, NFTCollection) => {
     const contract = new web3.eth.Contract(
       NFTCollection.abi,
-      /*deployedNetwork*/ NFTCollection.address
+      NFTCollection.address
     );
     dispatchCollectionAction({ type: "CONTRACT", contract: contract });
     return contract;
@@ -123,9 +117,10 @@ const CollectionProvider = (props) => {
 
     collection = [];
 
-    for (let i = 0; i < totalSupply; i++) {
-      const hash = await contract.methods.tokenURIs(i).call();
+    for (let tokenId = 1; tokenId <= totalSupply; tokenId++) {
       try {
+        const hash = await contract.methods.tokenURIs(tokenId).call();
+
         const response = await fetch(
           `https://ipfs.infura.io/ipfs/${hash}?clear`
         );
@@ -134,11 +129,11 @@ const CollectionProvider = (props) => {
         }
 
         const metadata = await response.json();
-        const owner = await contract.methods.ownerOf(i + 1).call();
+        const owner = await contract.methods.ownerOf(tokenId).call();
 
         collection = [
           {
-            id: i + 1,
+            id: tokenId,
             title: metadata.properties.name.description,
             description: metadata.properties.description.description,
             img: metadata.properties.image.description,

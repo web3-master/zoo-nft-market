@@ -14,7 +14,7 @@
     "send": "hardhat send",
     "generate": "hardhat generate",
     "account": "hardhat account",
-    "verify": "hardhat etherscan-verify --api-key DYFZ6Z93H853R2M6VXF29KPBTJIACK2I1Q"
+    "verify": "hardhat etherscan-verify --network ropsten --api-key DYFZ6Z93H853R2M6VXF29KPBTJIACK2I1Q"
   },
   "author": "daniel armstrong",
   "license": "BSC-1.0",

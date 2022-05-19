@@ -26,6 +26,10 @@ const AppMenu = () => {
         Mint
         <Link to="/mint" />
       </Menu.Item>
+      <Menu.Item key="profile" icon={<UserOutlined />}>
+        My Page
+        <Link to="/profile" />
+      </Menu.Item>
     </Menu>
   );
 };

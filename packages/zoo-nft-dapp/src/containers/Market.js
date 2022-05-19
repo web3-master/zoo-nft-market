@@ -66,12 +66,16 @@ const Market = () => {
     }
 
     if (filterPriceMin > 0 && filterPriceMax > 0) {
-      result = result.filter(
-        (nft) => {
-          let offer = marketplaceCtx.getOffer(nft.id);
-          if (offer != undefined && offer.price >= filterPriceMin * DECIMALS && offer.price <= filterPriceMax * DECIMALS)
-        }
-      );
+      result = result.filter((nft) => {
+        let offer = marketplaceCtx.getOffer(nft.id);
+        if (
+          offer != undefined &&
+          offer.price >= filterPriceMin * DECIMALS &&
+          offer.price <= filterPriceMax * DECIMALS
+        )
+          return true;
+        else return false;
+      });
     }
 
     setItems(result);

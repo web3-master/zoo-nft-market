@@ -115,16 +115,10 @@ const MarketplaceProvider = (props) => {
     defaultMarketplaceState
   );
 
-  const loadContractHandler = (web3, NFTMarketplace /*, deployedNetwork*/) => {
-    // const contract = deployedNetwork
-    //   ? new web3.eth.Contract(
-    //       NFTMarketplace.abi,
-    //       /*deployedNetwork*/ NFTMarketplace.address
-    //     )
-    //   : "";
+  const loadContractHandler = (web3, NFTMarketplace) => {
     const contract = new web3.eth.Contract(
       NFTMarketplace.abi,
-      /*deployedNetwork*/ NFTMarketplace.address
+      NFTMarketplace.address
     );
     dispatchMarketplaceAction({ type: "CONTRACT", contract: contract });
     return contract;

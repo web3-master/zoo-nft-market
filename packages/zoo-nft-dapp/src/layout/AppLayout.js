@@ -34,8 +34,8 @@ const AppLayout = () => {
                 </h1>
               </Col>
               <Col flex="auto"></Col>
-              <Col>{web3Ctx.networkId == 3 && <AppMenu />}</Col>
-              <Col span={1} style={{ marginRight: 10 }}>
+              <Col span={7}>{web3Ctx.networkId == 3 && <AppMenu />}</Col>
+              <Col style={{ marginRight: 10 }}>
                 <Account />
               </Col>
             </Row>

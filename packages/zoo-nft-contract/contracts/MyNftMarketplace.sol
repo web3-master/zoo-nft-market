@@ -61,10 +61,11 @@ contract MyNftMarketplace {
     }
 
     function claimFunds() public {
-        require(userFunds[msg.sender] > 0, 'This user has no funds to be claimed');
-        emit ClaimFunds(msg.sender, userFunds[msg.sender]);
+        uint userBalance = userFunds[msg.sender];
+        require(userBalance > 0, 'This user has no funds to be claimed');
+        emit ClaimFunds(msg.sender, userBalance);
         userFunds[msg.sender] = 0;
-        payable(msg.sender).transfer(userFunds[msg.sender]);
+        payable(msg.sender).transfer(userBalance);
     }
 
     fallback() external {
