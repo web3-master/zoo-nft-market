@@ -3,6 +3,11 @@
 # 🏆🏆🏆 Zoo NFT Market 🏆🏆🏆
 Simple but full fledged NFT market for all animals in the zoo.
 
+## 📺 LIVE ON 
+
+http://zoo-nft-market.surge.sh
+
+
 ## 📜 Contract
 ### ⚔️ Used technologies
 > Solidity: Smart contract development language.
