@@ -1,3 +1,4 @@
+import { ShoppingCartOutlined, WalletOutlined } from "@ant-design/icons";
 import {
   Alert,
   Button,
@@ -5,25 +6,22 @@ import {
   Col,
   Collapse,
   Form,
-  Image,
-  Input,
   InputNumber,
   notification,
   Result,
   Row,
   Skeleton,
 } from "antd";
+import { useForm } from "antd/lib/form/Form";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { WalletOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import EthPrice from "../components/EthPrice";
+import ethImage from "../images/eth.png";
+import web3 from "../web3/connection/web3";
 import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
 import Web3Context from "../web3/store/web3-context";
 import "./Details.css";
-import ethImage from "../images/eth.png";
-import { formatPrice } from "../helpers/utils";
-import { useForm } from "antd/lib/form/Form";
-import web3 from "../web3/connection/web3";
 
 const Detail = () => {
   let { id } = useParams();
@@ -97,17 +95,7 @@ const Detail = () => {
   const renderBuy = () => {
     return (
       <Card title="Sale" style={{ marginBottom: 10 }}>
-        <Row justify="center" align="middle">
-          <img src={ethImage} width={30} height={30} />
-          <span
-            style={{
-              fontSize: 40,
-              marginLeft: 10,
-            }}
-          >
-            {formatPrice(offer.price)}
-          </span>
-        </Row>
+        <EthPrice price={offer.price} />
         <Button
           icon={<WalletOutlined />}
           type="primary"
@@ -156,17 +144,7 @@ const Detail = () => {
   const renderMySale = () => {
     return (
       <Card title="Sale" style={{ marginBottom: 10 }}>
-        <Row justify="center" align="middle">
-          <img src={ethImage} width={30} height={30} />
-          <span
-            style={{
-              fontSize: 40,
-              marginLeft: 10,
-            }}
-          >
-            {formatPrice(offer.price)}
-          </span>
-        </Row>
+        <EthPrice price={offer.price} />
         <Button
           type="primary"
           onClick={cancelOffer}

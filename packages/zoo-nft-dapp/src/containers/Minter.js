@@ -1,22 +1,21 @@
+import { InboxOutlined } from "@ant-design/icons";
 import {
+  Alert,
   Button,
   Card,
+  Col,
   Form,
   Input,
-  Upload,
-  Row,
-  Col,
   notification,
-  Alert,
   Result,
+  Row,
+  Upload,
 } from "antd";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/lib/form/Form";
-import { InboxOutlined } from "@ant-design/icons";
 import { useContext, useState } from "react";
-import Web3Context from "../web3/store/web3-context";
+import { useNavigate } from "react-router-dom";
 import CollectionContext from "../web3/store/collection-context";
-import MarketplaceContext from "../web3/store/marketplace-context";
+import Web3Context from "../web3/store/web3-context";
 
 const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient.create({

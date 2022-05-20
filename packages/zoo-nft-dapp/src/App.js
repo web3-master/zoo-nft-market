@@ -1,16 +1,14 @@
-import React, { useEffect, useContext } from "react";
+import { notification } from "antd";
+import React, { useContext, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
-import logo from "./logo.svg";
 import "./App.css";
-import AppLayout from "./layout/AppLayout";
-
-import web3 from "./web3/connection/web3";
-import Web3Context from "./web3/store/web3-context";
-import CollectionContext from "./web3/store/collection-context";
-import MarketplaceContext from "./web3/store/marketplace-context";
 // import ZooNftContracts from "./contract-abis/localhost/zoo-nft-contracts.json";
 import ZooNftContracts from "./contract-abis/ropsten/zoo-nft-contracts.json";
-import { notification } from "antd";
+import AppLayout from "./layout/AppLayout";
+import web3 from "./web3/connection/web3";
+import CollectionContext from "./web3/store/collection-context";
+import MarketplaceContext from "./web3/store/marketplace-context";
+import Web3Context from "./web3/store/web3-context";
 
 function App() {
   const web3Ctx = useContext(Web3Context);
@@ -53,21 +51,11 @@ function App() {
         return;
       }
 
-      // const nftDeployedNetwork = NFTCollection.networks[networkId];
       const NFTCollection = ZooNftContracts.contracts.MyNftCollection;
-      const nftContract = collectionCtx.loadContract(
-        web3,
-        NFTCollection
-        // nftDeployedNetwork
-      );
+      const nftContract = collectionCtx.loadContract(web3, NFTCollection);
 
-      // const mktDeployedNetwork = NFTMarketplace.networks[networkId];
       const NFTMarketplace = ZooNftContracts.contracts.MyNftMarketplace;
-      const mktContract = marketplaceCtx.loadContract(
-        web3,
-        NFTMarketplace
-        // mktDeployedNetwork
-      );
+      const mktContract = marketplaceCtx.loadContract(web3, NFTMarketplace);
 
       if (nftContract) {
         const totalSupply = await collectionCtx.loadTotalSupply(nftContract);
@@ -109,7 +97,7 @@ function App() {
             marketplaceCtx.updateOffer(event.returnValues.offerId);
             collectionCtx.updateOwner(
               event.returnValues.id,
-              event.returnValues.newOwner
+              event.returnValues.user
             );
             marketplaceCtx.setMktIsLoading(false);
           })
@@ -121,7 +109,7 @@ function App() {
           });
 
         mktContract.events
-          .Offer()
+          .OfferCreated()
           .on("data", (event) => {
             marketplaceCtx.addOffer(event.returnValues);
             marketplaceCtx.setMktIsLoading(false);
@@ -139,7 +127,7 @@ function App() {
             marketplaceCtx.updateOffer(event.returnValues.offerId);
             collectionCtx.updateOwner(
               event.returnValues.id,
-              event.returnValues.owner
+              event.returnValues.user
             );
             marketplaceCtx.setMktIsLoading(false);
           })
@@ -153,7 +141,8 @@ function App() {
         mktContract.events
           .ClaimFunds()
           .on("data", (event) => {
-            if (event.returnValues.account === account) {
+            if (event.returnValues.user === account) {
+              marketplaceCtx.loadUserFunds(mktContract, account);
               marketplaceCtx.setMktIsLoading(false);
             }
           })

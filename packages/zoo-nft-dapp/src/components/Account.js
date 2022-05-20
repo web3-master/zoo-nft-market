@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { WalletOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import web3 from "../web3/connection/web3";
 import Web3Context from "../web3/store/web3-context";
-import CollectionContext from "../web3/store/collection-context";
-import MarketplaceContext from "../web3/store/marketplace-context";
 
 const Account = () => {
   const web3Ctx = useContext(Web3Context);

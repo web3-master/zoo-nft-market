@@ -1,26 +1,10 @@
-import {
-  Button,
-  Card,
-  Form,
-  Input,
-  Upload,
-  Row,
-  Col,
-  List,
-  notification,
-  Image,
-  Badge,
-} from "antd";
-import { PayCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { Badge, Card, Image, List } from "antd";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
 import Web3Context from "../web3/store/web3-context";
-import web3 from "../web3/connection/web3";
-import { formatPrice } from "../helpers/utils";
 import "./MarketItem.css";
-import { useNavigate } from "react-router-dom";
-import ethImage from "../images/eth.png";
 
 const MarketItem = ({ nft }) => {
   const web3Ctx = useContext(Web3Context);

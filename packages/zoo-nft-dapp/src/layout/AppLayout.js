@@ -11,7 +11,7 @@ import Web3Context from "../web3/store/web3-context";
 import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
 import { useContext } from "react";
-import Profile from "../containers/Profile";
+import Profile from "../containers/profile/Profile";
 import Detail from "../containers/Detail";
 import WrongNetwork from "../containers/WrongNetwork";
 

@@ -1,33 +1,28 @@
+import { ControlOutlined, TableOutlined } from "@ant-design/icons";
 import {
+  Alert,
   Button,
   Card,
+  Col,
+  Collapse,
   Form,
   Input,
-  Upload,
-  Row,
-  Col,
-  List,
-  notification,
-  Image,
-  Skeleton,
-  Alert,
-  Collapse,
-  Radio,
-  Space,
   InputNumber,
+  List,
   message,
-  Typography,
+  Radio,
+  Row,
+  Skeleton,
+  Space,
 } from "antd";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
-import { createRef, useContext, useEffect, useRef, useState } from "react";
+import { useForm } from "antd/lib/form/Form";
+import { useContext, useEffect, useState } from "react";
 import MarketItem from "../components/MarketItem";
-import web3 from "../web3/connection/web3";
+import { DECIMALS } from "../helpers/utils";
 import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
 import Web3Context from "../web3/store/web3-context";
-import { ControlOutlined, TableOutlined } from "@ant-design/icons";
-import { useForm } from "antd/lib/form/Form";
-import { DECIMALS } from "../helpers/utils";
 
 const Market = () => {
   const web3Ctx = useContext(Web3Context);

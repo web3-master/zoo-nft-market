@@ -2,7 +2,6 @@ import { WalletOutlined } from "@ant-design/icons";
 import {
   Alert,
   Button,
-  Card,
   Col,
   Collapse,
   List,
@@ -11,12 +10,12 @@ import {
   Skeleton,
 } from "antd";
 import { useContext, useEffect, useState } from "react";
-import MarketItem from "../components/MarketItem";
-import { formatPrice } from "../helpers/utils";
-import CollectionContext from "../web3/store/collection-context";
-import MarketplaceContext from "../web3/store/marketplace-context";
-import Web3Context from "../web3/store/web3-context";
-import ethImage from "../images/eth.png";
+import EthPrice from "../../components/EthPrice";
+import MarketItem from "../../components/MarketItem";
+import CollectionContext from "../../web3/store/collection-context";
+import MarketplaceContext from "../../web3/store/marketplace-context";
+import Web3Context from "../../web3/store/web3-context";
+import History from "./History";
 
 const Profile = () => {
   const web3Ctx = useContext(Web3Context);
@@ -45,10 +44,6 @@ const Profile = () => {
       return false;
     });
     setItems(result);
-
-    if (marketplaceCtx.contract != null && web3Ctx.account != null) {
-      marketplaceCtx.loadUserFunds(marketplaceCtx.contract, web3Ctx.account);
-    }
   }, [web3Ctx, collectionCtx, marketplaceCtx]);
 
   const renderItem = (nft, key) => {
@@ -103,22 +98,12 @@ const Profile = () => {
         )}
       </Col>
       <Col span={16} offset={4} style={{ marginTop: 10 }}>
-        <Collapse defaultActiveKey={["1", "2", "3"]}>
+        <Collapse defaultActiveKey={["1", "2", "3", "4"]}>
           <Collapse.Panel header="Wallet Address" key="1">
             <div align="left">{web3Ctx.account}</div>
           </Collapse.Panel>
           <Collapse.Panel header="My Earning" key="2">
-            <Row justify="center" align="middle">
-              <img src={ethImage} width={30} height={30} />
-              <span
-                style={{
-                  fontSize: 40,
-                  marginLeft: 10,
-                }}
-              >
-                {formatPrice(marketplaceCtx.userFunds)}
-              </span>
-            </Row>
+            <EthPrice price={marketplaceCtx.userFunds} />
             <Button
               icon={<WalletOutlined />}
               type="primary"
@@ -154,6 +139,9 @@ const Profile = () => {
                 }}
               />
             )}
+          </Collapse.Panel>
+          <Collapse.Panel header="My History" key="4">
+            <History />
           </Collapse.Panel>
         </Collapse>
       </Col>

@@ -431,7 +431,7 @@
       ]
     },
     "MyNftMarketplace": {
-      "address": "0x74830002164af920da98B1Ec906C7D8790A3beB9",
+      "address": "0xaf9624524a877C8D386B0Bf5B1A0a366C9c2FcE9",
       "abi": [
         {
           "inputs": [
@@ -448,7 +448,7 @@
           "anonymous": false,
           "inputs": [
             {
-              "indexed": false,
+              "indexed": true,
               "internalType": "address",
               "name": "user",
               "type": "address"
@@ -457,6 +457,12 @@
               "indexed": false,
               "internalType": "uint256",
               "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "timestamp",
               "type": "uint256"
             }
           ],
@@ -467,22 +473,90 @@
           "anonymous": false,
           "inputs": [
             {
-              "indexed": false,
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": true,
               "internalType": "uint256",
               "name": "offerId",
               "type": "uint256"
             },
             {
-              "indexed": false,
+              "indexed": true,
               "internalType": "uint256",
               "name": "id",
               "type": "uint256"
             },
             {
               "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "name": "Earned",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
               "internalType": "address",
               "name": "user",
               "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "offerId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "name": "OfferCancelled",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "offerId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
             },
             {
               "indexed": false,
@@ -501,56 +575,43 @@
               "internalType": "bool",
               "name": "cancelled",
               "type": "bool"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
             }
           ],
-          "name": "Offer",
+          "name": "OfferCreated",
           "type": "event"
         },
         {
           "anonymous": false,
           "inputs": [
             {
-              "indexed": false,
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": true,
               "internalType": "uint256",
               "name": "offerId",
               "type": "uint256"
             },
             {
-              "indexed": false,
+              "indexed": true,
               "internalType": "uint256",
               "name": "id",
               "type": "uint256"
             },
             {
               "indexed": false,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            }
-          ],
-          "name": "OfferCancelled",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
               "internalType": "uint256",
-              "name": "offerId",
+              "name": "timestamp",
               "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
             }
           ],
           "name": "OfferFilled",
