@@ -25,9 +25,24 @@ const Profile = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const result = collectionCtx.collection.filter(
-      (nft) => nft.owner == web3Ctx.account
-    );
+    const result = collectionCtx.collection.filter((nft) => {
+      //
+      // Not-sale items.
+      //
+      if (nft.owner == web3Ctx.account) {
+        return true;
+      }
+
+      //
+      // In sale items.
+      //
+      const nftOffer = marketplaceCtx.getOffer(nft.id);
+      if (nftOffer != null && nftOffer.user == web3Ctx.account) {
+        return true;
+      }
+
+      return false;
+    });
     setItems(result);
 
     if (marketplaceCtx.contract != null && web3Ctx.account != null) {
@@ -103,6 +118,7 @@ const Profile = () => {
               type="primary"
               style={{ marginTop: 10 }}
               onClick={withdraw}
+              disabled={marketplaceCtx.userFunds == 0}
             >
               Withdraw
             </Button>

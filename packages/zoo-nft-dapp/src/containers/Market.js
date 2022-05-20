@@ -27,6 +27,7 @@ import MarketplaceContext from "../web3/store/marketplace-context";
 import Web3Context from "../web3/store/web3-context";
 import { ControlOutlined, TableOutlined } from "@ant-design/icons";
 import { useForm } from "antd/lib/form/Form";
+import { DECIMALS } from "../helpers/utils";
 
 const Market = () => {
   const web3Ctx = useContext(Web3Context);
