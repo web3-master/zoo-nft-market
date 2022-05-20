@@ -22,7 +22,7 @@ const MarketItem = ({ nft }) => {
       <Card
         hoverable
         cover={
-          <div style={{ height: "200px", overflow: "hidden" }}>
+          <div style={{ height: "240px", overflow: "hidden" }}>
             <Image
               src={`https://ipfs.infura.io/ipfs/${nft.img}`}
               preview={false}
