@@ -149,6 +149,20 @@ function App() {
               description: error,
             });
           });
+
+        mktContract.events
+          .ClaimFunds()
+          .on("data", (event) => {
+            if (event.returnValues.account === account) {
+              marketplaceCtx.setMktIsLoading(false);
+            }
+          })
+          .on("error", (error) => {
+            notification["error"]({
+              message: "Error",
+              description: error,
+            });
+          });
       } else {
         window.alert(
           "NFTMarketplace contract not deployed to detected network."

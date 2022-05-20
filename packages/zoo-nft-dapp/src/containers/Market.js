@@ -230,17 +230,17 @@ const Market = () => {
                     gutter: 32,
                     xs: 1,
                     sm: 2,
-                    md: 3,
-                    lg: 3,
-                    xl: 3,
-                    xxl: 3,
+                    md: 2,
+                    lg: 4,
+                    xl: 4,
+                    xxl: 4,
                   }}
                   locale={{ emptyText: "There's nothing to show!" }}
                   dataSource={items}
                   renderItem={renderItem}
                   pagination={{
                     position: "bottom",
-                    pageSize: 6,
+                    pageSize: 8,
                     total: items.length,
                     showTotal: (total) => `Total ${total} items`,
                   }}

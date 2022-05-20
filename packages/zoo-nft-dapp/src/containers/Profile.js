@@ -1,5 +1,6 @@
 import { WalletOutlined } from "@ant-design/icons";
 import {
+  Alert,
   Button,
   Card,
   Col,
@@ -95,8 +96,13 @@ const Profile = () => {
   };
 
   return (
-    <Row gutter={10} style={{ margin: 60 }}>
-      <Col span={24}>
+    <Row gutter={(10, 10)} style={{ margin: 60 }}>
+      <Col span={16} offset={4}>
+        {marketplaceCtx.mktIsLoading && (
+          <Alert message="Processing..." type="info" showIcon />
+        )}
+      </Col>
+      <Col span={16} offset={4} style={{ marginTop: 10 }}>
         <Collapse defaultActiveKey={["1", "2", "3"]}>
           <Collapse.Panel header="Wallet Address" key="1">
             <div align="left">{web3Ctx.account}</div>
