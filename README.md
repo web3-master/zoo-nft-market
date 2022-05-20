@@ -15,12 +15,10 @@ Simple but full fledged NFT market for all animals in the zoo.
 This is hardhat based smart contract project and has 2 smart contracts for our zoo.
 
 1. ERC721 token contract.
-Repsten Address
-https://ropsten.etherscan.io/address/0x5fEe2df960616CBAAa28ec83Bcb11b4fbbdaCFd2
+([Ropsten Address](https://ropsten.etherscan.io/address/0x30E845d430048a2d264Fc275992a0E0cE6e680bE))
 
 2. NFT marketplace contract.
-Repsten Address
-https://ropsten.etherscan.io/address/0x9D403E7420aD6744E539a458032679E65414Cbba
+([Ropsten Address](https://ropsten.etherscan.io/address/0xaf9624524a877C8D386B0Bf5B1A0a366C9c2FcE9))
 
 ## 📺 DApp
 ### ⚔️ Used technologies
