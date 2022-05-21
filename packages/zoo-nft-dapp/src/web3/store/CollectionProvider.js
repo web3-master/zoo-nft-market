@@ -117,7 +117,7 @@ const CollectionProvider = (props) => {
 
     collection = [];
 
-    for (let tokenId = 1; tokenId <= totalSupply; tokenId++) {
+    for (let tokenId = 0; tokenId < totalSupply; tokenId++) {
       try {
         const hash = await contract.methods.tokenURI(tokenId).call();
 

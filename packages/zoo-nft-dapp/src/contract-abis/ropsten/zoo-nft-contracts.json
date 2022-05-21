@@ -2,8 +2,8 @@
   "name": "ropsten",
   "chainId": "3",
   "contracts": {
-    "MyNftCollection": {
-      "address": "0x30E845d430048a2d264Fc275992a0E0cE6e680bE",
+    "ZooNftCollection": {
+      "address": "0x9f8e251f9C6fC66113EC4E20F41A10e08bca8847",
       "abi": [
         {
           "inputs": [],
@@ -201,7 +201,7 @@
           "inputs": [
             {
               "internalType": "string",
-              "name": "_tokenURI",
+              "name": "uri",
               "type": "string"
             }
           ],
@@ -374,25 +374,6 @@
           "type": "function"
         },
         {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "tokenURIs",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
           "inputs": [],
           "name": "totalSupply",
           "outputs": [
@@ -430,8 +411,8 @@
         }
       ]
     },
-    "MyNftMarketplace": {
-      "address": "0xaf9624524a877C8D386B0Bf5B1A0a366C9c2FcE9",
+    "ZooNftMarketplace": {
+      "address": "0xD42Bdf6009bDa56B01C2633AC6a532e5de610824",
       "abi": [
         {
           "inputs": [

@@ -4,12 +4,15 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const myNftCollection = await ethers.getContract("MyNftCollection", deployer);
+  const zooNftCollection = await ethers.getContract(
+    "ZooNftCollection",
+    deployer
+  );
 
-  await deploy("MyNftMarketplace", {
+  await deploy("ZooNftMarketplace", {
     from: deployer,
-    args: [myNftCollection.address],
+    args: [zooNftCollection.address],
     log: true,
   });
 };
-module.exports.tags = ["MyNftMarketplace"];
+module.exports.tags = ["ZooNftMarketplace"];

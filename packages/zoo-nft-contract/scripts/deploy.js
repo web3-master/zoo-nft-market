@@ -14,23 +14,23 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const MyNftCollection = await hre.ethers.getContractFactory(
-    "MyNftCollection"
+  const ZooNftCollection = await hre.ethers.getContractFactory(
+    "ZooNftCollection"
   );
-  const myNftCollection = await MyNftCollection.deploy();
+  const zooNftCollection = await ZooNftCollection.deploy();
 
-  await myNftCollection.deployed();
+  await zooNftCollection.deployed();
 
-  console.log("MyNftCollection deployed to:", myNftCollection.address);
+  console.log("ZooNftCollection deployed to:", zooNftCollection.address);
 
-  const MyNftMarketplace = await hre.ethers.getContractFactory(
-    "MyNftMarketplace"
+  const ZooNftMarketplace = await hre.ethers.getContractFactory(
+    "ZooNftMarketplace"
   );
-  const myNftMarketplace = await MyNftMarketplace.deploy(
-    myNftCollection.address
+  const zooNftMarketplace = await ZooNftMarketplace.deploy(
+    zooNftCollection.address
   );
-  await myNftMarketplace.deployed();
-  console.log("MyNftMarketplace deployed to:", myNftMarketplace.address);
+  await zooNftMarketplace.deployed();
+  console.log("ZooNftMarketplace deployed to:", zooNftMarketplace.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

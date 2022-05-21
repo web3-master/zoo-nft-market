@@ -51,10 +51,10 @@ function App() {
         return;
       }
 
-      const NFTCollection = ZooNftContracts.contracts.MyNftCollection;
+      const NFTCollection = ZooNftContracts.contracts.ZooNftCollection;
       const nftContract = collectionCtx.loadContract(web3, NFTCollection);
 
-      const NFTMarketplace = ZooNftContracts.contracts.MyNftMarketplace;
+      const NFTMarketplace = ZooNftContracts.contracts.ZooNftMarketplace;
       const mktContract = marketplaceCtx.loadContract(web3, NFTMarketplace);
 
       if (nftContract) {

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./MyNftCollection.sol";
+import "./ZooNftCollection.sol";
 
-contract MyNftMarketplace {
+contract ZooNftMarketplace {
     uint public offerCount;
     mapping (uint => _Offer) public offers;
     mapping (address => uint) public userFunds;
-    MyNftCollection nftCollection;
+    ZooNftCollection nftCollection;
 
     struct _Offer {
         uint offerId;
@@ -57,7 +57,7 @@ contract MyNftMarketplace {
     );
 
     constructor(address _nftCollection) {
-        nftCollection = MyNftCollection(_nftCollection);
+        nftCollection = ZooNftCollection(_nftCollection);
     }
 
     function makeOffer(uint _id, uint _price) external {

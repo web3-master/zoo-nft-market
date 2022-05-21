@@ -9,7 +9,12 @@ const HistoryItem = ({ item }) => {
   const collectionCtx = useContext(CollectionContext);
 
   let nftId = item.returnValues.id;
-  let nft = collectionCtx.collection[collectionCtx.collection.length - nftId];
+
+  //
+  // [2022/05/21 16:27]token id is 0 based and collection is reversed array.
+  //
+  let nft =
+    collectionCtx.collection[collectionCtx.collection.length - 1 - nftId];
 
   const getHistoryDescription = () => {
     switch (item.event) {
