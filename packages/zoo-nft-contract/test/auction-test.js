@@ -72,6 +72,7 @@ describe.only("Auction Bid tests", function () {
   let auction;
   let seller;
   let bidder;
+  let bidder2;
 
   beforeEach(async function () {
     const NFT = await ethers.getContractFactory("ZooNftCollection");
@@ -84,9 +85,10 @@ describe.only("Auction Bid tests", function () {
     await auction.deployed();
     console.log("auction address:", auction.address);
 
-    [seller, bidder] = await ethers.getSigners();
+    [seller, bidder, bidder2] = await ethers.getSigners();
     console.log("seller: ", seller.address);
     console.log("bidder: ", bidder.address);
+    console.log("bidder2: ", bidder2.address);
 
     await nft.connect(seller).safeMint("");
     const tokenOwner = await nft.ownerOf(0);
@@ -122,20 +124,62 @@ describe.only("Auction Bid tests", function () {
     }
   });
 
-  it.only("Success test", async function () {
+  it("Success test", async function () {
     try {
       await auction
         .connect(bidder)
-        .makeBid(0, { value: ethers.utils.parseEther("1.1") });
+        .makeBid(0, { value: ethers.utils.parseEther("1.5") });
 
       const bidedAuction = await auction.auctions(0);
       console.log("bidedAuction", bidedAuction);
 
       expect(bidedAuction.highestBidder).equals(bidder.address);
-      expect(bidedAuction.highestBid).equals(ethers.utils.parseEther("1.1"));
+      expect(bidedAuction.highestBid).equals(ethers.utils.parseEther("1.5"));
     } catch (err) {
       console.log(err);
       assert(false, "Auction bid should success");
+    }
+  });
+
+  it("Bidder's price is lower than the highest.", async function () {
+    try {
+      await auction
+        .connect(bidder)
+        .makeBid(0, { value: ethers.utils.parseEther("1.5") });
+
+      await auction
+        .connect(bidder2)
+        .makeBid(0, { value: ethers.utils.parseEther("1.1") });
+
+      assert(
+        false,
+        "Make bid should be failed because bid price is lower than the highest."
+      );
+    } catch (err) {
+      expect(err.toString()).contains(
+        "Your bid is lower than the highest bid."
+      );
+    }
+  });
+
+  it("Success over bid.", async function () {
+    try {
+      await auction
+        .connect(bidder)
+        .makeBid(0, { value: ethers.utils.parseEther("1.5") });
+
+      await auction
+        .connect(bidder2)
+        .makeBid(0, { value: ethers.utils.parseEther("1.7") });
+
+      const bidedAuction = await auction.auctions(0);
+      console.log("bidedAuction", bidedAuction);
+
+      expect(bidedAuction.highestBidder).equals(bidder2.address);
+      expect(bidedAuction.highestBid).equals(ethers.utils.parseEther("1.7"));
+    } catch (err) {
+      console.log(err);
+      assert(false, "Auction over bid should success");
     }
   });
 });
