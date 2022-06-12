@@ -65,6 +65,7 @@ contract ZooNftAuction {
     }
 
     function createAuction(uint _id, uint _startPrice, uint _startTime, uint _endTime) external {
+        //console.log("startTime: %d, block.timestamp: %d, block.number: %d", _startTime, block.timestamp, block.number);
         require(_endTime > block.timestamp, 'Auction end time is invalid.');
         require(_endTime > _startTime, 'Auction end time should be later than start time.');
 
