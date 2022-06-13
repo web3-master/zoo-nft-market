@@ -121,6 +121,7 @@ contract ZooNftAuction {
         _Auction storage _auction = auctions[_auctionId];
 
         require(_auction.auctionId == _auctionId, 'The auction must exist');
+        require(_auction.user == msg.sender, 'The auction can only be claimed by the owner');
         require(block.timestamp > _auction.endTime, 'Auction not completed yet!');
         require(_auction.cancelled == false, 'Cancelled auction cannot be claimed!');
         require(_auction.fundClaimed == false, 'Auction fund is already claimed!');
