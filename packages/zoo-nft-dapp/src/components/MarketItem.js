@@ -1,6 +1,7 @@
 import { Badge, Card, Image, List } from "antd";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { IpfsGateway } from "../Constants";
 import CollectionContext from "../web3/store/collection-context";
 import MarketplaceContext from "../web3/store/marketplace-context";
 import Web3Context from "../web3/store/web3-context";
@@ -23,10 +24,7 @@ const MarketItem = ({ nft }) => {
         hoverable
         cover={
           <div style={{ height: "240px", overflow: "hidden" }}>
-            <Image
-              src={`https://ipfs.infura.io/ipfs/${nft.img}`}
-              preview={false}
-            />
+            <Image src={`${IpfsGateway}/${nft.img}`} preview={false} />
           </div>
         }
         bodyStyle={{ paddingLeft: 10, paddingRight: 10, paddingTop: 20 }}

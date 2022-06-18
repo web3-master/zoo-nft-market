@@ -14,6 +14,7 @@ import { useContext } from "react";
 import Profile from "../containers/profile/Profile";
 import Detail from "../containers/Detail";
 import WrongNetwork from "../containers/WrongNetwork";
+import { NetworkId } from "../Constants";
 
 const AppLayout = () => {
   const web3Ctx = useContext(Web3Context);
@@ -34,14 +35,16 @@ const AppLayout = () => {
                 </h1>
               </Col>
               <Col flex="auto"></Col>
-              <Col span={7}>{web3Ctx.networkId == 3 && <AppMenu />}</Col>
+              <Col span={7}>
+                {web3Ctx.networkId == NetworkId && <AppMenu />}
+              </Col>
               <Col style={{ marginRight: 10 }}>
                 <Account />
               </Col>
             </Row>
           </Header>
           <Content>
-            {web3Ctx.networkId == 3 ? (
+            {web3Ctx.networkId == NetworkId ? (
               <Routes>
                 <Route path="/" element={<Market />} />
                 <Route path="/market" element={<Market />} />

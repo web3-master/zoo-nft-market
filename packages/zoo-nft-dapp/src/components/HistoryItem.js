@@ -2,6 +2,7 @@ import { MoneyCollectFilled } from "@ant-design/icons";
 import { Col, Image, List, Row } from "antd";
 import moment from "moment";
 import { useContext } from "react";
+import { IpfsGateway } from "../Constants";
 import CollectionContext from "../web3/store/collection-context";
 import EthPrice from "./EthPrice";
 
@@ -76,7 +77,7 @@ const HistoryItem = ({ item }) => {
         <Col>
           {nft != null && (
             <Image
-              src={`https://ipfs.infura.io/ipfs/${nft.img}`}
+              src={`${IpfsGateway}/${nft.img}`}
               preview={false}
               width={60}
               height={60}

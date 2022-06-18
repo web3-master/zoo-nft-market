@@ -2,8 +2,9 @@ import { notification } from "antd";
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
-// import ZooNftContracts from "./contract-abis/localhost/zoo-nft-contracts.json";
-import ZooNftContracts from "./contract-abis/ropsten/zoo-nft-contracts.json";
+import { NetworkId } from "./Constants";
+import ZooNftContractsLocal from "./contract-abis/localhost/zoo-nft-contracts.json";
+import ZooNftContractsRopsten from "./contract-abis/ropsten/zoo-nft-contracts.json";
 import AppLayout from "./layout/AppLayout";
 import web3 from "./web3/connection/web3";
 import CollectionContext from "./web3/store/collection-context";
@@ -41,6 +42,8 @@ function App() {
         });
       }
 
+      const ZooNftContracts =
+        NetworkId == 3 ? ZooNftContractsRopsten : ZooNftContractsLocal;
       const account = await web3Ctx.loadAccount(web3);
       const networkId = await web3Ctx.loadNetworkId(web3);
       if (ZooNftContracts.chainId != networkId) {

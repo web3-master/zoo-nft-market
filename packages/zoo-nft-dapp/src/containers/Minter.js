@@ -14,14 +14,15 @@ import {
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { NetworkId, IpfsConfig } from "../Constants";
 import CollectionContext from "../web3/store/collection-context";
 import Web3Context from "../web3/store/web3-context";
 
 const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient.create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
+  host: IpfsConfig.Server,
+  port: IpfsConfig.Port,
+  protocol: IpfsConfig.Protocol,
 });
 
 const Minter = () => {
@@ -59,7 +60,7 @@ const Minter = () => {
       return;
     }
 
-    if (web3Ctx.networkId != 3) {
+    if (web3Ctx.networkId != NetworkId) {
       notification["error"]({
         message: "Error",
         description:

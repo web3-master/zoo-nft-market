@@ -16,6 +16,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EthPrice from "../components/EthPrice";
+import { IpfsGateway } from "../Constants";
 import ethImage from "../images/eth.png";
 import web3 from "../web3/connection/web3";
 import CollectionContext from "../web3/store/collection-context";
@@ -42,7 +43,7 @@ const Detail = () => {
 
     try {
       const hash = await contract.methods.tokenURI(id).call();
-      const response = await fetch(`https://ipfs.infura.io/ipfs/${hash}?clear`);
+      const response = await fetch(`${IpfsGateway}/${hash}?clear`);
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
@@ -240,10 +241,7 @@ const Detail = () => {
             )}
             <Card title={"Zoo NFT #" + nft.id} style={{ marginTop: 10 }}>
               <Row>
-                <img
-                  src={`https://ipfs.infura.io/ipfs/${nft.img}`}
-                  className="Image"
-                />
+                <img src={`${IpfsGateway}/${nft.img}`} className="Image" />
                 <Col flex={1} style={{ marginLeft: 20 }}>
                   {offer != null &&
                     offer.user != web3Ctx.account &&

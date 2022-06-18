@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { IpfsGateway } from "../../Constants";
 
 import CollectionContext from "./collection-context";
 
@@ -121,9 +122,7 @@ const CollectionProvider = (props) => {
       try {
         const hash = await contract.methods.tokenURI(tokenId).call();
 
-        const response = await fetch(
-          `https://ipfs.infura.io/ipfs/${hash}?clear`
-        );
+        const response = await fetch(`${IpfsGateway}/${hash}?clear`);
         if (!response.ok) {
           throw new Error("Something went wrong");
         }
@@ -155,7 +154,7 @@ const CollectionProvider = (props) => {
     let NFT;
     const hash = await contract.methods.tokenURI(id).call();
     try {
-      const response = await fetch(`https://ipfs.infura.io/ipfs/${hash}?clear`);
+      const response = await fetch(`${IpfsGateway}/${hash}?clear`);
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
