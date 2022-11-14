@@ -6,7 +6,7 @@ Simple but full fledged NFT market for all animals in the zoo.
 
 ## 📺 LIVE ON
 
-http://zoo-nft-market.surge.sh
+https://z-nft-market.surge.sh/
 
 ## 📜 Contract
 
