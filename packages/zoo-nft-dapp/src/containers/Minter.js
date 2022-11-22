@@ -14,16 +14,12 @@ import {
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NetworkId, IpfsConfig } from "../Constants";
+import { NetworkId, IpfsConfig, NFT_STORAGE_TOKEN } from "../Constants";
 import CollectionContext from "../web3/store/collection-context";
 import Web3Context from "../web3/store/web3-context";
+import { NFTStorage, File, Blob } from "nft.storage";
 
-const ipfsClient = require("ipfs-http-client");
-const ipfs = ipfsClient.create({
-  host: IpfsConfig.Server,
-  port: IpfsConfig.Port,
-  protocol: IpfsConfig.Protocol,
-});
+const nftStorageClient = new NFTStorage({ token: NFT_STORAGE_TOKEN });
 
 const Minter = () => {
   const web3Ctx = useContext(Web3Context);
@@ -64,7 +60,7 @@ const Minter = () => {
       notification["error"]({
         message: "Error",
         description:
-          "This network is not supported. Please connect to Ropsten network in MetaMask!",
+          "This network is not supported. Please connect to Goerli network in MetaMask!",
       });
       return;
     }
@@ -72,10 +68,12 @@ const Minter = () => {
     let { name, description } = values;
 
     setUploading(true);
-    const fileAdded = await ipfs.add(imageFileBuffer);
+    const imageFileBlob = new Blob(imageFileBuffer);
+    const fileAddedCid = await nftStorageClient.storeBlob(imageFileBlob);
+    console.log("fileAddedCid", fileAddedCid);
     setUploading(false);
 
-    if (!fileAdded) {
+    if (!fileAddedCid) {
       notification["error"]({
         message: "Error",
         description: "Something went wrong when updloading the file",
@@ -97,15 +95,20 @@ const Minter = () => {
         },
         image: {
           type: "string",
-          description: fileAdded.path,
+          description: fileAddedCid,
         },
       },
     };
 
     setUploading(true);
-    const metadataAdded = await ipfs.add(JSON.stringify(metadata));
+    const metadataBlob = new Blob([JSON.stringify(metadata)], {
+      type: "text/plain;charset=utf-8",
+    });
+    const metadataAddedCid = await nftStorageClient.storeBlob(metadataBlob);
+    console.log("metadataAddedCid", metadataAddedCid);
     setUploading(false);
-    if (!metadataAdded) {
+
+    if (!metadataAddedCid) {
       notification["error"]({
         message: "Error",
         description: "Something went wrong when creating metadata",
@@ -115,7 +118,7 @@ const Minter = () => {
 
     setMinting(true);
     collectionCtx.contract.methods
-      .safeMint(metadataAdded.path)
+      .safeMint(metadataAddedCid)
       .send({ from: web3Ctx.account })
       .on("transactionHash", (hash) => {
         collectionCtx.setNftIsLoading(true);

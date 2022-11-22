@@ -5,7 +5,7 @@
   "scripts": {
     "chain": "npm run chain --workspace zoo-nft-contract",
     "deploy-local": "npm run deploy-local --workspace zoo-nft-contract",
-    "deploy-ropsten": "npm run deploy-ropsten --workspace zoo-nft-contract",
+    "deploy-goerli": "npm run deploy-goerli --workspace zoo-nft-contract",
     "start": "npm run start --workspace zoo-nft-dapp",
     "build": "npm run build --workspace zoo-nft-dapp"
   },

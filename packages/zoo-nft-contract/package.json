@@ -8,13 +8,13 @@
     "test": "hardhat test",
     "compile": "hardhat compile",
     "deploy-local": "hardhat deploy --network localhost --export ../zoo-nft-dapp/src/contract-abis/localhost/zoo-nft-contracts.json",
-    "deploy-ropsten": "hardhat deploy --network ropsten --export ../zoo-nft-dapp/src/contract-abis/ropsten/zoo-nft-contracts.json",
+    "deploy-goerli": "hardhat deploy --network goerli --export ../zoo-nft-dapp/src/contract-abis/goerli/zoo-nft-contracts.json",
     "accounts": "hardhat accounts",
     "balance": "hardhat balance",
     "send": "hardhat send",
     "generate": "hardhat generate",
     "account": "hardhat account",
-    "verify": "hardhat etherscan-verify --network ropsten --api-key DYFZ6Z93H853R2M6VXF29KPBTJIACK2I1Q"
+    "verify": "hardhat etherscan-verify --network goerli --api-key DYFZ6Z93H853R2M6VXF29KPBTJIACK2I1Q"
   },
   "author": "daniel armstrong",
   "license": "BSC-1.0",
