@@ -8,7 +8,6 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.18.4",
     "antd-img-crop": "^4.1.0",
-    "ipfs-http-client": "^55.0.0",
     "moment": "^2.29.3",
     "nft.storage": "^7.0.0",
     "react": "^17.0.2",

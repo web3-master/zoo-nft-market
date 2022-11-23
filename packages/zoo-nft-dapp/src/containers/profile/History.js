@@ -48,13 +48,10 @@ const History = () => {
         })
       );
       var allEventsOfMe = (await Promise.all(allEventsOfMePromises)).flat(1);
-      console.log("all events", allEventsOfMe);
 
       var sortedEvents = allEventsOfMe.sort(
         (a, b) => b.blockNumber - a.blockNumber
       );
-
-      console.log("sorted all events", sortedEvents);
 
       setHistoryItems(sortedEvents);
     }

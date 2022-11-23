@@ -68,9 +68,10 @@ const Minter = () => {
     let { name, description } = values;
 
     setUploading(true);
-    const imageFileBlob = new Blob(imageFileBuffer);
+    const imageFileBlob = new File([imageFileBuffer], "image.jpg", {
+      type: "image/jpg",
+    });
     const fileAddedCid = await nftStorageClient.storeBlob(imageFileBlob);
-    console.log("fileAddedCid", fileAddedCid);
     setUploading(false);
 
     if (!fileAddedCid) {
@@ -105,7 +106,6 @@ const Minter = () => {
       type: "text/plain;charset=utf-8",
     });
     const metadataAddedCid = await nftStorageClient.storeBlob(metadataBlob);
-    console.log("metadataAddedCid", metadataAddedCid);
     setUploading(false);
 
     if (!metadataAddedCid) {

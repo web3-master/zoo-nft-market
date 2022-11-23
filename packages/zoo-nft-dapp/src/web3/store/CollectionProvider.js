@@ -121,7 +121,6 @@ const CollectionProvider = (props) => {
     for (let tokenId = 0; tokenId < totalSupply; tokenId++) {
       try {
         const hash = await contract.methods.tokenURI(tokenId).call();
-        console.log("hash", hash);
         const response = await fetch(`${IpfsGateway}/${hash}?clear`);
         if (!response.ok) {
           throw new Error("Something went wrong");
@@ -153,7 +152,6 @@ const CollectionProvider = (props) => {
   const updateCollectionHandler = async (contract, id, owner) => {
     let NFT;
     const hash = await contract.methods.tokenURI(id).call();
-    console.log("hash", hash);
     try {
       const response = await fetch(`${IpfsGateway}/${hash}?clear`);
       if (!response.ok) {
