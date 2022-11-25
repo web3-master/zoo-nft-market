@@ -1,4 +1,8 @@
-import { ShoppingCartOutlined, WalletOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  WalletOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import {
   Alert,
   Button,
@@ -34,6 +38,7 @@ const Detail = () => {
   const [nft, setNft] = useState(null);
   const [offer, setOffer] = useState(null);
   const [invalidId, setInvalidId] = useState(false);
+  const [burnProcessing, setBurnProcessing] = useState(false);
 
   const loadNft = async () => {
     let contract = collectionCtx.contract;
@@ -230,6 +235,45 @@ const Detail = () => {
       });
   };
 
+  const renderBurnButton = () => {
+    return (
+      <Button
+        icon={<DeleteOutlined />}
+        type="primary"
+        style={{ background: "red", borderColor: "red", marginTop: 30 }}
+        onClick={onBurn}
+      >
+        Delete this item
+      </Button>
+    );
+  };
+
+  const onBurn = () => {
+    collectionCtx.contract.methods
+      .burn(nft.id)
+      .send({ from: web3Ctx.account })
+      .on("transactionHash", (hash) => {
+        setBurnProcessing(true);
+      })
+      .on("confirmation", (confirmationNumber, receipt) => {
+        if (confirmationNumber == 0) {
+          setBurnProcessing(false);
+          notification["success"]({
+            message: "Delete",
+            description: "NFT item deleted!",
+          });
+          navigate("/");
+        }
+      })
+      .on("error", (e) => {
+        notification["error"]({
+          message: "Error",
+          description: "Something went wrong when pushing to the blockchain",
+        });
+        setBurnProcessing(false);
+      });
+  };
+
   return (
     <Row style={{ margin: 20 }}>
       <Col span={16} offset={4} style={{ marginTop: 10 }}>
@@ -238,6 +282,9 @@ const Detail = () => {
           <>
             {marketplaceCtx.mktIsLoading && (
               <Alert message="Processing..." type="info" showIcon />
+            )}
+            {burnProcessing && (
+              <Alert message="Deleting..." type="info" showIcon />
             )}
             <Card title={"Zoo NFT #" + nft.id} style={{ marginTop: 10 }}>
               <Row>
@@ -267,6 +314,9 @@ const Detail = () => {
                 </Col>
               </Row>
             </Card>
+            {offer == null &&
+              nft.owner == web3Ctx.account &&
+              renderBurnButton()}
           </>
         )}
       </Col>

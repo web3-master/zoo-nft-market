@@ -3,7 +3,7 @@
   "chainId": "5",
   "contracts": {
     "ZooNftCollection": {
-      "address": "0x69b83E8b4A92CbCb8926D0A962dDFFAab1ea9C54",
+      "address": "0x2a95Cb31661d3d67CcFC94bf5727ed98289358Cf",
       "abi": [
         {
           "inputs": [],
@@ -120,6 +120,19 @@
             }
           ],
           "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "name": "burn",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -412,7 +425,7 @@
       ]
     },
     "ZooNftMarketplace": {
-      "address": "0xFd856764d4D2b1cc7bB61780585447C21aCE0574",
+      "address": "0x3BA8E0a50C4566f66C2FD32E446ada815c1d1196",
       "abi": [
         {
           "inputs": [
