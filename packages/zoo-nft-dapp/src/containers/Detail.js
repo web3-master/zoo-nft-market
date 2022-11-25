@@ -57,7 +57,7 @@ const Detail = () => {
       const owner = await contract.methods.ownerOf(id).call();
 
       setNft({
-        id: parseInt(id),
+        id: id,
         title: metadata.properties.name.description,
         description: metadata.properties.description.description,
         img: metadata.properties.image.description,
@@ -74,6 +74,10 @@ const Detail = () => {
   };
 
   useEffect(() => {
+    if (burnProcessing === true) {
+      return;
+    }
+
     loadNft();
     loadOffer();
   }, [web3Ctx, collectionCtx, marketplaceCtx]);
@@ -259,10 +263,10 @@ const Detail = () => {
         if (confirmationNumber == 0) {
           setBurnProcessing(false);
           notification["success"]({
-            message: "Delete",
+            message: "Delete success",
             description: "NFT item deleted!",
           });
-          navigate("/");
+          navigate("/market");
         }
       })
       .on("error", (e) => {

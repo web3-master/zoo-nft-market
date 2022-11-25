@@ -39,9 +39,7 @@ const collectionReducer = (state, action) => {
   }
 
   if (action.type === "UPDATECOLLECTION") {
-    const index = state.collection.findIndex(
-      (NFT) => NFT.id === parseInt(action.NFT.id)
-    );
+    const index = state.collection.findIndex((NFT) => NFT.id === action.NFT.id);
     let collection = [];
 
     if (index === -1) {
@@ -59,15 +57,26 @@ const collectionReducer = (state, action) => {
   }
 
   if (action.type === "UPDATEOWNER") {
-    const index = state.collection.findIndex(
-      (NFT) => NFT.id === parseInt(action.id)
-    );
+    const index = state.collection.findIndex((NFT) => NFT.id === action.id);
     let collection = [...state.collection];
-    collection[index].owner = action.newOwner;
+    if (index > -1) {
+      collection[index].owner = action.newOwner;
+    }
 
     return {
       contract: state.contract,
       totalSupply: state.totalSupply,
+      collection: collection,
+      nftIsLoading: state.nftIsLoading,
+    };
+  }
+
+  if (action.type === "DELETEITEM") {
+    let collection = state.collection.filter((NFT) => NFT.id !== action.id);
+
+    return {
+      contract: state.contract,
+      totalSupply: collection.length,
       collection: collection,
       nftIsLoading: state.nftIsLoading,
     };
@@ -118,8 +127,9 @@ const CollectionProvider = (props) => {
 
     collection = [];
 
-    for (let tokenId = 0; tokenId < totalSupply; tokenId++) {
+    for (var i = 0; i < totalSupply; i++) {
       try {
+        let tokenId = await contract.methods.tokenByIndex(i).call();
         const hash = await contract.methods.tokenURI(tokenId).call();
         const response = await fetch(`${IpfsGateway}/${hash}?clear`);
         if (!response.ok) {
@@ -150,6 +160,17 @@ const CollectionProvider = (props) => {
   };
 
   const updateCollectionHandler = async (contract, id, owner) => {
+    /**
+     * This handler is called when a token is burned with zero address value of owner.
+     */
+    if (owner.toString() === "0x0000000000000000000000000000000000000000") {
+      dispatchCollectionAction({
+        type: "DELETEITEM",
+        id: id,
+      });
+      return;
+    }
+
     let NFT;
     const hash = await contract.methods.tokenURI(id).call();
     try {
@@ -161,7 +182,7 @@ const CollectionProvider = (props) => {
       const metadata = await response.json();
 
       NFT = {
-        id: parseInt(id),
+        id: id,
         title: metadata.properties.name.description,
         description: metadata.properties.description.description,
         img: metadata.properties.image.description,

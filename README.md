@@ -23,10 +23,10 @@ https://z-nft-market.surge.sh/
 This is hardhat based smart contract project and has 2 smart contracts for our zoo.
 
 1. ERC721 token contract.
-   ([Goerli Address](https://goerli.etherscan.io/address/0x69b83E8b4A92CbCb8926D0A962dDFFAab1ea9C54))
+   ([Goerli Address](https://goerli.etherscan.io/address/0x2a95Cb31661d3d67CcFC94bf5727ed98289358Cf))
 
 2. NFT marketplace contract.
-   ([Goerli Address](https://goerli.etherscan.io/address/0xFd856764d4D2b1cc7bB61780585447C21aCE0574))
+   ([Goerli Address](https://goerli.etherscan.io/address/0x3BA8E0a50C4566f66C2FD32E446ada815c1d1196))
 
 ## 📺 DApp
 

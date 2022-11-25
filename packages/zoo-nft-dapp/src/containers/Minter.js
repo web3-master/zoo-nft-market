@@ -12,12 +12,12 @@ import {
   Upload,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import { Blob, File, NFTStorage } from "nft.storage";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NetworkId, IpfsConfig, NFT_STORAGE_TOKEN } from "../Constants";
+import { NetworkId, NFT_STORAGE_TOKEN } from "../Constants";
 import CollectionContext from "../web3/store/collection-context";
 import Web3Context from "../web3/store/web3-context";
-import { NFTStorage, File, Blob } from "nft.storage";
 
 const nftStorageClient = new NFTStorage({ token: NFT_STORAGE_TOKEN });
 
