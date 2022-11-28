@@ -291,9 +291,11 @@ const Detail = () => {
               <Alert message="Deleting..." type="info" showIcon />
             )}
             <Card title={"Zoo NFT #" + nft.id} style={{ marginTop: 10 }}>
-              <Row>
-                <img src={`${IpfsGateway}/${nft.img}`} className="Image" />
-                <Col flex={1} style={{ marginLeft: 20 }}>
+              <Row gutter={20}>
+                <Col span={12}>
+                  <img src={`${IpfsGateway}/${nft.img}`} className="Image" />
+                </Col>
+                <Col span={12}>
                   {offer != null &&
                     offer.user != web3Ctx.account &&
                     renderBuy()}
