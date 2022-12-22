@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const MarketplaceContext = React.createContext({
   contract: null,
@@ -13,7 +13,7 @@ const MarketplaceContext = React.createContext({
   addOffer: () => {},
   loadUserFunds: () => {},
   setMktIsLoading: () => {},
-  getOffer: () => {},
-});
+  getOffer: () => {}
+})
 
-export default MarketplaceContext;
+export default MarketplaceContext

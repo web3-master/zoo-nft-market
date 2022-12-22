@@ -1,8 +1,8 @@
 import {
   ShoppingCartOutlined,
   WalletOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+  DeleteOutlined
+} from '@ant-design/icons'
 import {
   Alert,
   Button,
@@ -14,75 +14,75 @@ import {
   notification,
   Result,
   Row,
-  Skeleton,
-} from "antd";
-import { useForm } from "antd/lib/form/Form";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import EthPrice from "../components/EthPrice";
-import { IpfsGateway } from "../Constants";
-import ethImage from "../images/eth.png";
-import web3 from "../web3/connection/web3";
-import CollectionContext from "../web3/store/collection-context";
-import MarketplaceContext from "../web3/store/marketplace-context";
-import Web3Context from "../web3/store/web3-context";
-import "./Details.css";
+  Skeleton
+} from 'antd'
+import { useForm } from 'antd/lib/form/Form'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import EthPrice from '../components/EthPrice'
+import { IpfsGateway } from '../Constants'
+import ethImage from '../images/eth.png'
+import web3 from '../web3/connection/web3'
+import CollectionContext from '../web3/store/collection-context'
+import MarketplaceContext from '../web3/store/marketplace-context'
+import Web3Context from '../web3/store/web3-context'
+import './Details.css'
 
 const Detail = () => {
-  let { id } = useParams();
-  let navigate = useNavigate();
-  const [createSaleForm] = useForm();
-  const web3Ctx = useContext(Web3Context);
-  const collectionCtx = useContext(CollectionContext);
-  const marketplaceCtx = useContext(MarketplaceContext);
-  const [nft, setNft] = useState(null);
-  const [offer, setOffer] = useState(null);
-  const [invalidId, setInvalidId] = useState(false);
-  const [burnProcessing, setBurnProcessing] = useState(false);
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [createSaleForm] = useForm()
+  const web3Ctx = useContext(Web3Context)
+  const collectionCtx = useContext(CollectionContext)
+  const marketplaceCtx = useContext(MarketplaceContext)
+  const [nft, setNft] = useState(null)
+  const [offer, setOffer] = useState(null)
+  const [invalidId, setInvalidId] = useState(false)
+  const [burnProcessing, setBurnProcessing] = useState(false)
 
   const loadNft = async () => {
-    let contract = collectionCtx.contract;
+    const contract = collectionCtx.contract
     if (contract == null) {
-      return;
+      return
     }
 
     try {
-      const hash = await contract.methods.tokenURI(id).call();
-      const response = await fetch(`${IpfsGateway}/${hash}?clear`);
+      const hash = await contract.methods.tokenURI(id).call()
+      const response = await fetch(`${IpfsGateway}/${hash}?clear`)
       if (!response.ok) {
-        throw new Error("Something went wrong");
+        throw new Error('Something went wrong')
       }
 
-      const metadata = await response.json();
-      const owner = await contract.methods.ownerOf(id).call();
+      const metadata = await response.json()
+      const owner = await contract.methods.ownerOf(id).call()
 
       setNft({
-        id: id,
+        id,
         title: metadata.properties.name.description,
         description: metadata.properties.description.description,
         img: metadata.properties.image.description,
-        owner: owner,
-      });
+        owner
+      })
     } catch (error) {
-      setInvalidId(true);
+      setInvalidId(true)
     }
-  };
+  }
 
   const loadOffer = () => {
-    const offer = marketplaceCtx.getOffer(id);
-    setOffer(offer);
-  };
+    const offer = marketplaceCtx.getOffer(id)
+    setOffer(offer)
+  }
 
   useEffect(() => {
     if (burnProcessing === true) {
-      return;
+      return
     }
 
-    loadNft();
-    loadOffer();
-  }, [web3Ctx, collectionCtx, marketplaceCtx]);
+    loadNft()
+    loadOffer()
+  }, [web3Ctx, collectionCtx, marketplaceCtx])
 
-  const owner = offer == null ? (nft != null ? nft.owner : "") : offer.user;
+  const owner = offer == null ? (nft != null ? nft.owner : '') : offer.user
 
   if (!collectionCtx.nftIsLoading && invalidId) {
     return (
@@ -93,13 +93,13 @@ const Detail = () => {
           <Button
             type="primary"
             key="console"
-            onClick={() => navigate("/market")}
+            onClick={() => navigate('/market')}
           >
             Go Market
           </Button>
         }
       />
-    );
+    )
   }
 
   const renderBuy = () => {
@@ -115,41 +115,42 @@ const Detail = () => {
           Buy
         </Button>
       </Card>
-    );
-  };
+    )
+  }
 
   const buy = async () => {
     if (web3Ctx.account == null) {
       try {
         await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
+          method: 'eth_requestAccounts'
+        })
       } catch (error) {
-        notification["error"]({
-          message: "Error",
-          description: error,
-        });
+        notification.error({
+          message: 'Error',
+          description: error
+        })
       }
-      return;
+      return
     }
 
     marketplaceCtx.contract.methods
       .fillOffer(offer.offerId)
       .send({
         from: web3Ctx.account,
-        value: offer.price,
+        value: offer.price
       })
-      .on("transactionHash", (hash) => {
-        marketplaceCtx.setMktIsLoading(true);
+      .on('transactionHash', (hash) => {
+        marketplaceCtx.setMktIsLoading(true)
       })
-      .on("error", (error) => {
-        notification["error"]({
-          message: "Error",
-          description: "Something went wrong when pushing to the blockchain",
-        });
-        marketplaceCtx.setMktIsLoading(false);
-      });
-  };
+      .on('error', (error) => {
+        notification.error({
+          message: 'Error',
+          description: 'Something went wrong when pushing to the blockchain'
+        })
+        marketplaceCtx.setMktIsLoading(false)
+        console.log(error)
+      })
+  }
 
   const renderMySale = () => {
     return (
@@ -158,29 +159,30 @@ const Detail = () => {
         <Button
           type="primary"
           onClick={cancelOffer}
-          style={{ marginTop: 10, background: "red", borderColor: "red" }}
+          style={{ marginTop: 10, background: 'red', borderColor: 'red' }}
         >
           Cancel
         </Button>
       </Card>
-    );
-  };
+    )
+  }
 
   const cancelOffer = () => {
     marketplaceCtx.contract.methods
       .cancelOffer(offer.offerId)
       .send({ from: web3Ctx.account })
-      .on("transactionHash", (hash) => {
-        marketplaceCtx.setMktIsLoading(true);
+      .on('transactionHash', (hash) => {
+        marketplaceCtx.setMktIsLoading(true)
       })
-      .on("error", (error) => {
-        notification["error"]({
-          message: "Error",
-          description: "Something went wrong when pushing to the blockchain",
-        });
-        marketplaceCtx.setMktIsLoading(false);
-      });
-  };
+      .on('error', (error) => {
+        notification.error({
+          message: 'Error',
+          description: 'Something went wrong when pushing to the blockchain'
+        })
+        marketplaceCtx.setMktIsLoading(false)
+        console.log(error)
+      })
+  }
 
   const renderCreateSale = () => {
     return (
@@ -189,7 +191,7 @@ const Detail = () => {
           <Form.Item
             label="Price"
             name="price"
-            rules={[{ required: true, message: "Please input price!" }]}
+            rules={[{ required: true, message: 'Please input price!' }]}
           >
             <InputNumber
               addonBefore={<img src={ethImage} width={14} height={14} />}
@@ -202,81 +204,83 @@ const Detail = () => {
               icon={<ShoppingCartOutlined />}
               type="primary"
               htmlType="submit"
-              style={{ background: "green", borderColor: "green" }}
+              style={{ background: 'green', borderColor: 'green' }}
             >
               Create
             </Button>
           </Form.Item>
         </Form>
       </Card>
-    );
-  };
+    )
+  }
 
   const createSale = (values) => {
-    let { price } = values;
-    const enteredPrice = web3.utils.toWei(price.toString(), "ether");
+    const { price } = values
+    const enteredPrice = web3.utils.toWei(price.toString(), 'ether')
 
     collectionCtx.contract.methods
       .approve(marketplaceCtx.contract.options.address, nft.id)
       .send({ from: web3Ctx.account })
-      .on("transactionHash", (hash) => {
-        marketplaceCtx.setMktIsLoading(true);
+      .on('transactionHash', (hash) => {
+        marketplaceCtx.setMktIsLoading(true)
       })
-      .on("confirmation", (confirmationNumber, receipt) => {
-        if (confirmationNumber == 0) {
+      .on('confirmation', (confirmationNumber, receipt) => {
+        if (confirmationNumber === 0) {
           marketplaceCtx.contract.methods
             .makeOffer(nft.id, enteredPrice)
             .send({ from: web3Ctx.account })
-            .on("error", (error) => {
-              notification["error"]({
-                message: "Error",
+            .on('error', (error) => {
+              notification.error({
+                message: 'Error',
                 description:
-                  "Something went wrong when pushing to the blockchain",
-              });
-              marketplaceCtx.setMktIsLoading(false);
-            });
+                  'Something went wrong when pushing to the blockchain'
+              })
+              marketplaceCtx.setMktIsLoading(false)
+              console.log(error)
+            })
         }
-      });
-  };
+      })
+  }
 
   const renderBurnButton = () => {
     return (
       <Button
         icon={<DeleteOutlined />}
         type="primary"
-        style={{ background: "red", borderColor: "red", marginTop: 30 }}
+        style={{ background: 'red', borderColor: 'red', marginTop: 30 }}
         onClick={onBurn}
       >
         Delete this item
       </Button>
-    );
-  };
+    )
+  }
 
   const onBurn = () => {
     collectionCtx.contract.methods
       .burn(nft.id)
       .send({ from: web3Ctx.account })
-      .on("transactionHash", (hash) => {
-        setBurnProcessing(true);
+      .on('transactionHash', (hash) => {
+        setBurnProcessing(true)
       })
-      .on("confirmation", (confirmationNumber, receipt) => {
-        if (confirmationNumber == 0) {
-          setBurnProcessing(false);
-          notification["success"]({
-            message: "Delete success",
-            description: "NFT item deleted!",
-          });
-          navigate("/market");
+      .on('confirmation', (confirmationNumber, receipt) => {
+        if (confirmationNumber === 0) {
+          setBurnProcessing(false)
+          notification.success({
+            message: 'Delete success',
+            description: 'NFT item deleted!'
+          })
+          navigate('/market')
         }
       })
-      .on("error", (e) => {
-        notification["error"]({
-          message: "Error",
-          description: "Something went wrong when pushing to the blockchain",
-        });
-        setBurnProcessing(false);
-      });
-  };
+      .on('error', (error) => {
+        notification.error({
+          message: 'Error',
+          description: 'Something went wrong when pushing to the blockchain'
+        })
+        setBurnProcessing(false)
+        console.log(error)
+      })
+  }
 
   return (
     <Row style={{ margin: 20 }}>
@@ -290,44 +294,65 @@ const Detail = () => {
             {burnProcessing && (
               <Alert message="Deleting..." type="info" showIcon />
             )}
-            <Card title={"Zoo NFT #" + nft.id} style={{ marginTop: 10 }}>
+            <Card title={'Zoo NFT #' + nft.id} style={{ marginTop: 10 }}>
               <Row gutter={20}>
                 <Col span={12}>
                   <img src={`${IpfsGateway}/${nft.img}`} className="Image" />
                 </Col>
                 <Col span={12}>
                   {offer != null &&
-                    offer.user != web3Ctx.account &&
+                    offer.user !== web3Ctx.account &&
                     renderBuy()}
                   {offer != null &&
-                    offer.user == web3Ctx.account &&
+                    offer.user === web3Ctx.account &&
                     renderMySale()}
                   {offer == null &&
-                    nft.owner == web3Ctx.account &&
+                    nft.owner === web3Ctx.account &&
                     renderCreateSale()}
 
-                  <Collapse defaultActiveKey={["1", "2", "3"]}>
+                  <Collapse defaultActiveKey={['1', '2', '3']}>
                     <Collapse.Panel header="Title" key="1">
-                      <div align="left">{nft.title}</div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'start'
+                        }}
+                      >
+                        {nft.title}
+                      </div>
                     </Collapse.Panel>
                     <Collapse.Panel header="Description" key="2">
-                      <div align="left">{nft.description}</div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'start'
+                        }}
+                      >
+                        {nft.description}
+                      </div>
                     </Collapse.Panel>
                     <Collapse.Panel header="Owner" key="3">
-                      <div align="left">{owner}</div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'start'
+                        }}
+                      >
+                        {owner}
+                      </div>
                     </Collapse.Panel>
                   </Collapse>
                 </Col>
               </Row>
             </Card>
             {offer == null &&
-              nft.owner == web3Ctx.account &&
+              nft.owner === web3Ctx.account &&
               renderBurnButton()}
           </>
         )}
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default Detail;
+export default Detail

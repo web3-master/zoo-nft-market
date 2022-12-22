@@ -1,143 +1,144 @@
-import { useReducer } from "react";
-import { IpfsGateway } from "../../Constants";
+import React, { useReducer } from 'react'
+import { IpfsGateway } from '../../Constants'
+import PropTypes from 'prop-types'
 
-import CollectionContext from "./collection-context";
+import CollectionContext from './collection-context'
 
 const defaultCollectionState = {
   contract: null,
   totalSupply: null,
   collection: [],
-  nftIsLoading: true,
-};
+  nftIsLoading: true
+}
 
 const collectionReducer = (state, action) => {
-  if (action.type === "CONTRACT") {
+  if (action.type === 'CONTRACT') {
     return {
       contract: action.contract,
       totalSupply: state.totalSupply,
       collection: state.collection,
-      nftIsLoading: state.nftIsLoading,
-    };
+      nftIsLoading: state.nftIsLoading
+    }
   }
 
-  if (action.type === "LOADSUPPLY") {
+  if (action.type === 'LOADSUPPLY') {
     return {
       contract: state.contract,
       totalSupply: action.totalSupply,
       collection: state.collection,
-      nftIsLoading: state.nftIsLoading,
-    };
+      nftIsLoading: state.nftIsLoading
+    }
   }
 
-  if (action.type === "LOADCOLLECTION") {
+  if (action.type === 'LOADCOLLECTION') {
     return {
       contract: state.contract,
       totalSupply: state.totalSupply,
       collection: action.collection,
-      nftIsLoading: state.nftIsLoading,
-    };
+      nftIsLoading: state.nftIsLoading
+    }
   }
 
-  if (action.type === "UPDATECOLLECTION") {
-    const index = state.collection.findIndex((NFT) => NFT.id === action.NFT.id);
-    let collection = [];
+  if (action.type === 'UPDATECOLLECTION') {
+    const index = state.collection.findIndex((NFT) => NFT.id === action.NFT.id)
+    let collection = []
 
     if (index === -1) {
-      collection = [action.NFT, ...state.collection];
+      collection = [action.NFT, ...state.collection]
     } else {
-      collection = [...state.collection];
+      collection = [...state.collection]
     }
 
     return {
       contract: state.contract,
       totalSupply: state.totalSupply,
-      collection: collection,
-      nftIsLoading: state.nftIsLoading,
-    };
+      collection,
+      nftIsLoading: state.nftIsLoading
+    }
   }
 
-  if (action.type === "UPDATEOWNER") {
-    const index = state.collection.findIndex((NFT) => NFT.id === action.id);
-    let collection = [...state.collection];
+  if (action.type === 'UPDATEOWNER') {
+    const index = state.collection.findIndex((NFT) => NFT.id === action.id)
+    const collection = [...state.collection]
     if (index > -1) {
-      collection[index].owner = action.newOwner;
+      collection[index].owner = action.newOwner
     }
 
     return {
       contract: state.contract,
       totalSupply: state.totalSupply,
-      collection: collection,
-      nftIsLoading: state.nftIsLoading,
-    };
+      collection,
+      nftIsLoading: state.nftIsLoading
+    }
   }
 
-  if (action.type === "DELETEITEM") {
-    let collection = state.collection.filter((NFT) => NFT.id !== action.id);
+  if (action.type === 'DELETEITEM') {
+    const collection = state.collection.filter((NFT) => NFT.id !== action.id)
 
     return {
       contract: state.contract,
       totalSupply: collection.length,
-      collection: collection,
-      nftIsLoading: state.nftIsLoading,
-    };
+      collection,
+      nftIsLoading: state.nftIsLoading
+    }
   }
 
-  if (action.type === "LOADING") {
+  if (action.type === 'LOADING') {
     return {
       contract: state.contract,
       totalSupply: state.totalSupply,
       collection: state.collection,
-      nftIsLoading: action.loading,
-    };
+      nftIsLoading: action.loading
+    }
   }
 
-  return defaultCollectionState;
-};
+  return defaultCollectionState
+}
 
 const CollectionProvider = (props) => {
   const [CollectionState, dispatchCollectionAction] = useReducer(
     collectionReducer,
     defaultCollectionState
-  );
+  )
 
   const loadContractHandler = (web3, NFTCollection) => {
     const contract = new web3.eth.Contract(
       NFTCollection.abi,
       NFTCollection.address
-    );
-    dispatchCollectionAction({ type: "CONTRACT", contract: contract });
-    return contract;
-  };
+    )
+    dispatchCollectionAction({ type: 'CONTRACT', contract })
+    return contract
+  }
 
   const loadTotalSupplyHandler = async (contract) => {
-    const totalSupply = await contract.methods.totalSupply().call();
-    dispatchCollectionAction({ type: "LOADSUPPLY", totalSupply: totalSupply });
-    return totalSupply;
-  };
+    const totalSupply = await contract.methods.totalSupply().call()
+    dispatchCollectionAction({ type: 'LOADSUPPLY', totalSupply })
+    return totalSupply
+  }
 
   const loadCollectionHandler = async (contract, totalSupply) => {
-    var collection = [];
-    for (var i = 0; i < totalSupply; i++) {
-      collection.push({});
-    }
-    dispatchCollectionAction({
-      type: "LOADCOLLECTION",
-      collection: collection,
-    });
+    let collection = []
+    // for (let i = 0; i < totalSupply; i++) {
+    //   collection.push({})
+    // }
+    // dispatchCollectionAction({
+    //   type: 'LOADCOLLECTION',
+    //   collection
+    // })
 
-    collection = [];
+    // collection = []
 
-    for (var i = 0; i < totalSupply; i++) {
+    for (let i = 0; i < totalSupply; i++) {
       try {
-        let tokenId = await contract.methods.tokenByIndex(i).call();
-        const hash = await contract.methods.tokenURI(tokenId).call();
-        const response = await fetch(`${IpfsGateway}/${hash}?clear`);
+        const tokenId = await contract.methods.tokenByIndex(i).call()
+        const hash = await contract.methods.tokenURI(tokenId).call()
+        const response = await fetch(`${IpfsGateway}/${hash}?clear`)
         if (!response.ok) {
-          throw new Error("Something went wrong");
+          throw new Error('Something went wrong')
         }
 
-        const metadata = await response.json();
-        const owner = await contract.methods.ownerOf(tokenId).call();
+        const metadata = await response.json()
+        const owner = await contract.methods.ownerOf(tokenId).call()
 
         collection = [
           {
@@ -145,66 +146,66 @@ const CollectionProvider = (props) => {
             title: metadata.properties.name.description,
             description: metadata.properties.description.description,
             img: metadata.properties.image.description,
-            owner: owner,
+            owner
           },
-          ...collection,
-        ];
+          ...collection
+        ]
       } catch {
-        console.error("Something went wrong");
+        console.error('Something went wrong')
       }
     }
     dispatchCollectionAction({
-      type: "LOADCOLLECTION",
-      collection: collection,
-    });
-  };
+      type: 'LOADCOLLECTION',
+      collection
+    })
+  }
 
   const updateCollectionHandler = async (contract, id, owner) => {
     /**
      * This handler is called when a token is burned with zero address value of owner.
      */
-    if (owner.toString() === "0x0000000000000000000000000000000000000000") {
+    if (owner.toString() === '0x0000000000000000000000000000000000000000') {
       dispatchCollectionAction({
-        type: "DELETEITEM",
-        id: id,
-      });
-      return;
+        type: 'DELETEITEM',
+        id
+      })
+      return
     }
 
-    let NFT;
-    const hash = await contract.methods.tokenURI(id).call();
+    let NFT
+    const hash = await contract.methods.tokenURI(id).call()
     try {
-      const response = await fetch(`${IpfsGateway}/${hash}?clear`);
+      const response = await fetch(`${IpfsGateway}/${hash}?clear`)
       if (!response.ok) {
-        throw new Error("Something went wrong");
+        throw new Error('Something went wrong')
       }
 
-      const metadata = await response.json();
+      const metadata = await response.json()
 
       NFT = {
-        id: id,
+        id,
         title: metadata.properties.name.description,
         description: metadata.properties.description.description,
         img: metadata.properties.image.description,
-        owner: owner,
-      };
+        owner
+      }
     } catch {
-      console.error("Something went wrong");
+      console.error('Something went wrong')
     }
-    dispatchCollectionAction({ type: "UPDATECOLLECTION", NFT: NFT });
-  };
+    dispatchCollectionAction({ type: 'UPDATECOLLECTION', NFT })
+  }
 
   const updateOwnerHandler = (id, newOwner) => {
     dispatchCollectionAction({
-      type: "UPDATEOWNER",
-      id: id,
-      newOwner: newOwner,
-    });
-  };
+      type: 'UPDATEOWNER',
+      id,
+      newOwner
+    })
+  }
 
   const setNftIsLoadingHandler = (loading) => {
-    dispatchCollectionAction({ type: "LOADING", loading: loading });
-  };
+    dispatchCollectionAction({ type: 'LOADING', loading })
+  }
 
   const collectionContext = {
     contract: CollectionState.contract,
@@ -216,14 +217,18 @@ const CollectionProvider = (props) => {
     loadCollection: loadCollectionHandler,
     updateCollection: updateCollectionHandler,
     updateOwner: updateOwnerHandler,
-    setNftIsLoading: setNftIsLoadingHandler,
-  };
+    setNftIsLoading: setNftIsLoadingHandler
+  }
 
   return (
     <CollectionContext.Provider value={collectionContext}>
       {props.children}
     </CollectionContext.Provider>
-  );
-};
+  )
+}
 
-export default CollectionProvider;
+CollectionProvider.propTypes = {
+  children: PropTypes.element.isRequired
+}
+
+export default CollectionProvider

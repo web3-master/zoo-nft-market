@@ -1,4 +1,4 @@
-import { ControlOutlined, TableOutlined } from "@ant-design/icons";
+import { ControlOutlined, TableOutlined } from '@ant-design/icons'
 import {
   Alert,
   Button,
@@ -13,100 +13,100 @@ import {
   Radio,
   Row,
   Skeleton,
-  Space,
-} from "antd";
-import CollapsePanel from "antd/lib/collapse/CollapsePanel";
-import { useForm } from "antd/lib/form/Form";
-import { useContext, useEffect, useState } from "react";
-import MarketItem from "../components/MarketItem";
-import { DECIMALS } from "../helpers/utils";
-import CollectionContext from "../web3/store/collection-context";
-import MarketplaceContext from "../web3/store/marketplace-context";
-import Web3Context from "../web3/store/web3-context";
+  Space
+} from 'antd'
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
+import { useForm } from 'antd/lib/form/Form'
+import React, { useContext, useEffect, useState } from 'react'
+import MarketItem from '../components/MarketItem'
+import { DECIMALS } from '../helpers/utils'
+import CollectionContext from '../web3/store/collection-context'
+import MarketplaceContext from '../web3/store/marketplace-context'
+import Web3Context from '../web3/store/web3-context'
 
 const Market = () => {
-  const web3Ctx = useContext(Web3Context);
-  const collectionCtx = useContext(CollectionContext);
-  const marketplaceCtx = useContext(MarketplaceContext);
-  const [items, setItems] = useState([]);
+  const web3Ctx = useContext(Web3Context)
+  const collectionCtx = useContext(CollectionContext)
+  const marketplaceCtx = useContext(MarketplaceContext)
+  const [items, setItems] = useState([])
 
-  const [keyword, setKeyword] = useState("");
-  const [filterState, setFilterState] = useState(0); // 0: All, 1: InSale, 2: OnAuction
-  const [filterPriceMin, setFilterPriceMin] = useState(0);
-  const [filterPriceMax, setFilterPriceMax] = useState(0);
+  const [keyword, setKeyword] = useState('')
+  const [filterState, setFilterState] = useState(0) // 0: All, 1: InSale, 2: OnAuction
+  const [filterPriceMin, setFilterPriceMin] = useState(0)
+  const [filterPriceMax, setFilterPriceMax] = useState(0)
 
-  const [keywordForm] = useForm();
-  const [priceForm] = useForm();
-
-  useEffect(() => {
-    setItems(collectionCtx.collection);
-  }, [web3Ctx, collectionCtx, marketplaceCtx]);
+  const [keywordForm] = useForm()
+  const [priceForm] = useForm()
 
   useEffect(() => {
-    var result = [];
-    if (keyword == "") {
-      result = collectionCtx.collection;
+    setItems(collectionCtx.collection)
+  }, [web3Ctx, collectionCtx, marketplaceCtx])
+
+  useEffect(() => {
+    let result = []
+    if (keyword === '') {
+      result = collectionCtx.collection
     } else {
       result = collectionCtx.collection.filter(
         (nft) =>
           nft.title.includes(keyword) || nft.description.includes(keyword)
-      );
+      )
     }
 
     if (filterState > 0) {
-      if (filterState == 1) {
+      if (filterState === 1) {
         result = result.filter(
-          (nft) => marketplaceCtx.getOffer(nft.id) != undefined
-        );
+          (nft) => marketplaceCtx.getOffer(nft.id) !== null
+        )
       }
     }
 
     if (filterPriceMin > 0 && filterPriceMax > 0) {
       result = result.filter((nft) => {
-        let offer = marketplaceCtx.getOffer(nft.id);
+        const offer = marketplaceCtx.getOffer(nft.id)
         if (
-          offer != undefined &&
+          offer !== null &&
           offer.price >= filterPriceMin * DECIMALS &&
           offer.price <= filterPriceMax * DECIMALS
-        )
-          return true;
-        else return false;
-      });
+        ) {
+          return true
+        } else return false
+      })
     }
 
-    setItems(result);
-  }, [keyword, filterState, filterPriceMin, filterPriceMax]);
+    setItems(result)
+  }, [keyword, filterState, filterPriceMin, filterPriceMax])
 
   const renderItem = (nft, key) => {
-    if (Object.keys(nft).length == 0) {
+    if (Object.keys(nft).length === 0) {
       return (
         <List.Item>
           <Skeleton active />
         </List.Item>
-      );
+      )
     } else {
-      return <MarketItem nft={nft} />;
+      return <MarketItem nft={nft} />
     }
-  };
+  }
 
   const onKeywordSubmit = () => {
-    setKeyword(keywordForm.getFieldValue("keyword"));
-  };
+    setKeyword(keywordForm.getFieldValue('keyword'))
+  }
 
   const onPriceSubmit = () => {
-    let min = parseFloat(priceForm.getFieldValue("min"));
-    let max = parseFloat(priceForm.getFieldValue("max"));
+    const min = parseFloat(priceForm.getFieldValue('min'))
+    const max = parseFloat(priceForm.getFieldValue('max'))
     if (min > max) {
-      message.error("Please input correct price range!");
-      return;
+      message.error('Please input correct price range!')
+      return
     }
-    setFilterPriceMin(min);
-    setFilterPriceMax(max);
-  };
+    setFilterPriceMin(min)
+    setFilterPriceMax(max)
+  }
 
   const onFilterStateChange = (e) => {
-    setFilterState(e.target.value);
-  };
+    setFilterState(e.target.value)
+  }
 
   const renderFilterBar = () => {
     return (
@@ -124,7 +124,7 @@ const Market = () => {
             <CollapsePanel header="Keyword" key={1}>
               <Form
                 form={keywordForm}
-                initialValues={{ keyword: "" }}
+                initialValues={{ keyword: '' }}
                 onFinish={onKeywordSubmit}
               >
                 <Row gutter={10}>
@@ -146,13 +146,13 @@ const Market = () => {
             <CollapsePanel header="Status" key={2}>
               <Radio.Group value={filterState} onChange={onFilterStateChange}>
                 <Space direction="vertical">
-                  <Radio value={0} style={{ width: "100%" }}>
+                  <Radio value={0} style={{ width: '100%' }}>
                     All
                   </Radio>
-                  <Radio value={1} style={{ width: "100%" }}>
+                  <Radio value={1} style={{ width: '100%' }}>
                     In Sale
                   </Radio>
-                  <Radio value={2} style={{ width: "100%" }} disabled>
+                  <Radio value={2} style={{ width: '100%' }} disabled>
                     On Auction
                   </Radio>
                 </Space>
@@ -164,7 +164,7 @@ const Market = () => {
                 initialValues={{ min: 0, max: 0 }}
                 onFinish={onPriceSubmit}
               >
-                <Row style={{ alignItems: "top" }}>
+                <Row style={{ alignItems: 'top' }}>
                   <Col flex={1}>
                     <Form.Item name="min" noStyle>
                       <InputNumber placeholder="Min" />
@@ -190,8 +190,8 @@ const Market = () => {
           </Collapse>
         </Card>
       </Col>
-    );
-  };
+    )
+  }
 
   return (
     <Row style={{ margin: 20 }}>
@@ -228,16 +228,16 @@ const Market = () => {
                     md: 2,
                     lg: 4,
                     xl: 4,
-                    xxl: 4,
+                    xxl: 4
                   }}
                   locale={{ emptyText: "There's nothing to show!" }}
                   dataSource={items}
                   renderItem={renderItem}
                   pagination={{
-                    position: "bottom",
+                    position: 'bottom',
                     pageSize: 8,
                     total: items.length,
-                    showTotal: (total) => `Total ${total} items`,
+                    showTotal: (total) => `Total ${total} items`
                   }}
                 />
               )}
@@ -246,7 +246,7 @@ const Market = () => {
         </Row>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default Market;
+export default Market

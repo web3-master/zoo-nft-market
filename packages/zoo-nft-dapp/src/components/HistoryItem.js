@@ -1,25 +1,26 @@
-import { MoneyCollectFilled } from "@ant-design/icons";
-import { Col, Image, List, Row } from "antd";
-import moment from "moment";
-import { useContext } from "react";
-import { IpfsGateway } from "../Constants";
-import CollectionContext from "../web3/store/collection-context";
-import EthPrice from "./EthPrice";
+import { MoneyCollectFilled } from '@ant-design/icons'
+import { Col, Image, List, Row } from 'antd'
+import moment from 'moment'
+import React, { useContext } from 'react'
+import { IpfsGateway } from '../Constants'
+import CollectionContext from '../web3/store/collection-context'
+import EthPrice from './EthPrice'
+import PropTypes from 'prop-types'
 
 const HistoryItem = ({ item }) => {
-  const collectionCtx = useContext(CollectionContext);
+  const collectionCtx = useContext(CollectionContext)
 
-  let nftId = item.returnValues.id;
+  const nftId = item.returnValues.id
 
   //
   // [2022/05/21 16:27]token id is 0 based and collection is reversed array.
   //
-  let nft =
-    collectionCtx.collection[collectionCtx.collection.length - 1 - nftId];
+  const nft =
+    collectionCtx.collection[collectionCtx.collection.length - 1 - nftId]
 
   const getHistoryDescription = () => {
     switch (item.event) {
-      case "OfferCreated":
+      case 'OfferCreated':
         return (
           <Row align="middle" gutter={6}>
             <Col>Started saling with the price of</Col>
@@ -33,12 +34,12 @@ const HistoryItem = ({ item }) => {
             </Col>
             <Col>.</Col>
           </Row>
-        );
-      case "OfferFilled":
-        return `Bought item`;
-      case "OfferCancelled":
-        return `Cancelled saling`;
-      case "Earned":
+        )
+      case 'OfferFilled':
+        return 'Bought item'
+      case 'OfferCancelled':
+        return 'Cancelled saling'
+      case 'Earned':
         return (
           <Row align="middle" gutter={6}>
             <Col>Earned </Col>
@@ -52,8 +53,8 @@ const HistoryItem = ({ item }) => {
             </Col>
             <Col> by saling.</Col>
           </Row>
-        );
-      case "ClaimFunds":
+        )
+      case 'ClaimFunds':
         return (
           <Row align="middle" gutter={6}>
             <Col>Withdrawn </Col>
@@ -67,9 +68,9 @@ const HistoryItem = ({ item }) => {
             </Col>
             <Col> into the wallet.</Col>
           </Row>
-        );
+        )
     }
-  };
+  }
 
   return (
     <List.Item>
@@ -83,15 +84,15 @@ const HistoryItem = ({ item }) => {
               height={60}
             />
           )}
-          {item.event === "ClaimFunds" && (
+          {item.event === 'ClaimFunds' && (
             <MoneyCollectFilled style={{ fontSize: 60 }} />
           )}
         </Col>
         <Col align="start" flex={1}>
           {nft != null && (
             <div>
-              <span style={{ fontSize: 16, fontWeight: "600" }}>#{nft.id}</span>
-              <span style={{ marginLeft: 6, fontSize: 16, fontWeight: "600" }}>
+              <span style={{ fontSize: 16, fontWeight: '600' }}>#{nft.id}</span>
+              <span style={{ marginLeft: 6, fontSize: 16, fontWeight: '600' }}>
                 {nft.title}
               </span>
             </div>
@@ -100,12 +101,16 @@ const HistoryItem = ({ item }) => {
           <div>
             {moment
               .unix(item.returnValues.timestamp)
-              .format("YYYY-MM-DD HH:mm:ss")}
+              .format('YYYY-MM-DD HH:mm:ss')}
           </div>
         </Col>
       </Row>
     </List.Item>
-  );
-};
+  )
+}
 
-export default HistoryItem;
+HistoryItem.propTypes = {
+  item: PropTypes.object
+}
+
+export default HistoryItem

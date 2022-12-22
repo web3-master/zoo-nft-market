@@ -1,7 +1,8 @@
-import { Row } from "antd";
-import React from "react";
-import { formatPrice } from "../helpers/utils";
-import ethImage from "../images/eth.png";
+import { Row } from 'antd'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { formatPrice } from '../helpers/utils'
+import ethImage from '../images/eth.png'
 
 const EthPrice = ({ price, imageSize = 30, textSize = 40, padding = 10 }) => {
   return (
@@ -10,14 +11,21 @@ const EthPrice = ({ price, imageSize = 30, textSize = 40, padding = 10 }) => {
       <span
         style={{
           fontSize: textSize,
-          fontWeight: "600",
-          marginLeft: padding,
+          fontWeight: '600',
+          marginLeft: padding
         }}
       >
         {formatPrice(price)}
       </span>
     </Row>
-  );
-};
+  )
+}
 
-export default EthPrice;
+EthPrice.propTypes = {
+  price: PropTypes.string,
+  imageSize: PropTypes.number,
+  textSize: PropTypes.number,
+  padding: PropTypes.number
+}
+
+export default EthPrice

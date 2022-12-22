@@ -1,4 +1,4 @@
-import { InboxOutlined } from "@ant-design/icons";
+import { InboxOutlined } from '@ant-design/icons'
 import {
   Alert,
   Button,
@@ -9,140 +9,140 @@ import {
   notification,
   Result,
   Row,
-  Upload,
-} from "antd";
-import { useForm } from "antd/lib/form/Form";
-import { Blob, File, NFTStorage } from "nft.storage";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { NetworkId, NFT_STORAGE_TOKEN } from "../Constants";
-import CollectionContext from "../web3/store/collection-context";
-import Web3Context from "../web3/store/web3-context";
+  Upload
+} from 'antd'
+import { useForm } from 'antd/lib/form/Form'
+import { Blob, File, NFTStorage } from 'nft.storage'
+import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { NetworkId, NFT_STORAGE_TOKEN } from '../Constants'
+import CollectionContext from '../web3/store/collection-context'
+import Web3Context from '../web3/store/web3-context'
 
-const nftStorageClient = new NFTStorage({ token: NFT_STORAGE_TOKEN });
+const nftStorageClient = new NFTStorage({ token: NFT_STORAGE_TOKEN })
 
 const Minter = () => {
-  const web3Ctx = useContext(Web3Context);
-  const collectionCtx = useContext(CollectionContext);
-  let navigate = useNavigate();
+  const web3Ctx = useContext(Web3Context)
+  const collectionCtx = useContext(CollectionContext)
+  const navigate = useNavigate()
 
-  const [form] = useForm();
-  const [imageFileBuffer, setImageFileBuffer] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [minting, setMinting] = useState(false);
-  const [mintSuccess, setMintSuccess] = useState(false);
+  const [form] = useForm()
+  const [imageFileBuffer, setImageFileBuffer] = useState(null)
+  const [uploading, setUploading] = useState(false)
+  const [minting, setMinting] = useState(false)
+  const [mintSuccess, setMintSuccess] = useState(false)
 
   const onFileSelected = (file) => {
-    const reader = new window.FileReader();
-    reader.readAsArrayBuffer(file);
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
     reader.onloadend = () => {
-      setImageFileBuffer(Buffer(reader.result));
-    };
-    return false;
-  };
+      setImageFileBuffer(Buffer.from(reader.result))
+    }
+    return false
+  }
 
   const onCreate = async (values) => {
     if (web3Ctx.account == null) {
       try {
         await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
+          method: 'eth_requestAccounts'
+        })
       } catch (error) {
-        notification["error"]({
-          message: "Error",
-          description: error,
-        });
+        notification.error({
+          message: 'Error',
+          description: error
+        })
       }
-      return;
+      return
     }
 
-    if (web3Ctx.networkId != NetworkId) {
-      notification["error"]({
-        message: "Error",
+    if (web3Ctx.networkId !== NetworkId) {
+      notification.error({
+        message: 'Error',
         description:
-          "This network is not supported. Please connect to Goerli network in MetaMask!",
-      });
-      return;
+          'This network is not supported. Please connect to Goerli network in MetaMask!'
+      })
+      return
     }
 
-    let { name, description } = values;
+    const { name, description } = values
 
-    setUploading(true);
-    const imageFileBlob = new File([imageFileBuffer], "image.jpg", {
-      type: "image/jpg",
-    });
-    const fileAddedCid = await nftStorageClient.storeBlob(imageFileBlob);
-    setUploading(false);
+    setUploading(true)
+    const imageFileBlob = new File([imageFileBuffer], 'image.jpg', {
+      type: 'image/jpg'
+    })
+    const fileAddedCid = await nftStorageClient.storeBlob(imageFileBlob)
+    setUploading(false)
 
     if (!fileAddedCid) {
-      notification["error"]({
-        message: "Error",
-        description: "Something went wrong when updloading the file",
-      });
-      return;
+      notification.error({
+        message: 'Error',
+        description: 'Something went wrong when updloading the file'
+      })
+      return
     }
 
     const metadata = {
-      title: "Asset Metadata",
-      type: "object",
+      title: 'Asset Metadata',
+      type: 'object',
       properties: {
         name: {
-          type: "string",
-          description: name,
+          type: 'string',
+          description: name
         },
         description: {
-          type: "string",
-          description: description,
+          type: 'string',
+          description
         },
         image: {
-          type: "string",
-          description: fileAddedCid,
-        },
-      },
-    };
-
-    setUploading(true);
-    const metadataBlob = new Blob([JSON.stringify(metadata)], {
-      type: "text/plain;charset=utf-8",
-    });
-    const metadataAddedCid = await nftStorageClient.storeBlob(metadataBlob);
-    setUploading(false);
-
-    if (!metadataAddedCid) {
-      notification["error"]({
-        message: "Error",
-        description: "Something went wrong when creating metadata",
-      });
-      return;
+          type: 'string',
+          description: fileAddedCid
+        }
+      }
     }
 
-    setMinting(true);
+    setUploading(true)
+    const metadataBlob = new Blob([JSON.stringify(metadata)], {
+      type: 'text/plain;charset=utf-8'
+    })
+    const metadataAddedCid = await nftStorageClient.storeBlob(metadataBlob)
+    setUploading(false)
+
+    if (!metadataAddedCid) {
+      notification.error({
+        message: 'Error',
+        description: 'Something went wrong when creating metadata'
+      })
+      return
+    }
+
+    setMinting(true)
     collectionCtx.contract.methods
       .safeMint(metadataAddedCid)
       .send({ from: web3Ctx.account })
-      .on("transactionHash", (hash) => {
-        collectionCtx.setNftIsLoading(true);
+      .on('transactionHash', (hash) => {
+        collectionCtx.setNftIsLoading(true)
       })
-      .on("confirmation", (confirmationNumber, receipt) => {
-        if (confirmationNumber == 0) {
-          setMinting(false);
-          setMintSuccess(true);
+      .on('confirmation', (confirmationNumber, receipt) => {
+        if (confirmationNumber === 0) {
+          setMinting(false)
+          setMintSuccess(true)
         }
       })
-      .on("error", (e) => {
-        setMinting(false);
-        notification["error"]({
-          message: "Error",
-          description: "Something went wrong when pushing to the blockchain",
-        });
-        collectionCtx.setNftIsLoading(false);
-      });
-  };
+      .on('error', (e) => {
+        setMinting(false)
+        notification.error({
+          message: 'Error',
+          description: 'Something went wrong when pushing to the blockchain'
+        })
+        collectionCtx.setNftIsLoading(false)
+      })
+  }
 
   const onMintAgain = () => {
-    setMintSuccess(false);
-    form.resetFields();
-  };
+    setMintSuccess(false)
+    form.resetFields()
+  }
 
   if (mintSuccess) {
     return (
@@ -155,16 +155,16 @@ const Minter = () => {
           <Button
             type="primary"
             key="console"
-            onClick={() => navigate("/market")}
+            onClick={() => navigate('/market')}
           >
             Go Market
           </Button>,
           <Button key="buy" onClick={onMintAgain}>
             Mint Again
-          </Button>,
+          </Button>
         ]}
       />
-    );
+    )
   }
 
   return (
@@ -191,7 +191,7 @@ const Minter = () => {
             <Form.Item
               label="Name"
               name="name"
-              rules={[{ required: true, message: "Please input name!" }]}
+              rules={[{ required: true, message: 'Please input name!' }]}
             >
               <Input placeholder="Input nft name here." />
             </Form.Item>
@@ -199,7 +199,7 @@ const Minter = () => {
             <Form.Item
               label="Description"
               name="description"
-              rules={[{ required: true, message: "Please input description!" }]}
+              rules={[{ required: true, message: 'Please input description!' }]}
             >
               <Input.TextArea placeholder="Input nft description here." />
             </Form.Item>
@@ -207,7 +207,7 @@ const Minter = () => {
             <Form.Item
               label="Image"
               name="image"
-              rules={[{ required: true, message: "Please select image!" }]}
+              rules={[{ required: true, message: 'Please select image!' }]}
             >
               <Upload.Dragger
                 name="image"
@@ -233,7 +233,7 @@ const Minter = () => {
         </Card>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default Minter;
+export default Minter

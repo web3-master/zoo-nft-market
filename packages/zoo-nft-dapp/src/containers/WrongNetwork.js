@@ -1,11 +1,12 @@
-import { Button, Result } from "antd";
+import { Button, Result } from 'antd'
+import React from 'react'
 
 const WrongNetwork = () => {
   const onHowto = () => {
     window.open(
-      "https://blog.cryptostars.is/goerli-g%C3%B6rli-testnet-network-to-metamask-and-receiving-test-ethereum-in-less-than-2-min-de13e6fe5677"
-    );
-  };
+      'https://blog.cryptostars.is/goerli-g%C3%B6rli-testnet-network-to-metamask-and-receiving-test-ethereum-in-less-than-2-min-de13e6fe5677'
+    )
+  }
 
   return (
     <Result
@@ -18,7 +19,7 @@ const WrongNetwork = () => {
         </Button>
       }
     />
-  );
-};
+  )
+}
 
-export default WrongNetwork;
+export default WrongNetwork

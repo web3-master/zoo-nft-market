@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const CollectionContext = React.createContext({
   contract: null,
@@ -11,7 +11,7 @@ const CollectionContext = React.createContext({
   updateTotalSupply: () => {},
   updateCollection: () => {},
   updateOwner: () => {},
-  setNftIsLoading: () => {},
-});
+  setNftIsLoading: () => {}
+})
 
-export default CollectionContext;
+export default CollectionContext

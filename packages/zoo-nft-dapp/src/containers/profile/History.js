@@ -1,75 +1,75 @@
-import { List, Skeleton } from "antd";
-import { useContext, useEffect, useState } from "react";
-import HistoryItem from "../../components/HistoryItem";
-import CollectionContext from "../../web3/store/collection-context";
-import MarketplaceContext from "../../web3/store/marketplace-context";
-import Web3Context from "../../web3/store/web3-context";
+import { List, Skeleton } from 'antd'
+import React, { useContext, useEffect, useState } from 'react'
+import HistoryItem from '../../components/HistoryItem'
+import CollectionContext from '../../web3/store/collection-context'
+import MarketplaceContext from '../../web3/store/marketplace-context'
+import Web3Context from '../../web3/store/web3-context'
 
 const History = () => {
-  const web3Ctx = useContext(Web3Context);
-  const collectionCtx = useContext(CollectionContext);
-  const marketplaceCtx = useContext(MarketplaceContext);
+  const web3Ctx = useContext(Web3Context)
+  const collectionCtx = useContext(CollectionContext)
+  const marketplaceCtx = useContext(MarketplaceContext)
 
-  const [historyItems, setHistoryItems] = useState([]);
+  const [historyItems, setHistoryItems] = useState([])
 
   useEffect(() => {
-    loadHistory();
-  }, [web3Ctx, collectionCtx, marketplaceCtx]);
+    loadHistory()
+  }, [web3Ctx, collectionCtx, marketplaceCtx])
 
   const renderItem = (item, key) => {
-    if (Object.keys(item).length == 0) {
+    if (Object.keys(item).length === 0) {
       return (
         <List.Item>
           <Skeleton active />
         </List.Item>
-      );
+      )
     } else {
-      return <HistoryItem item={item} />;
+      return <HistoryItem item={item} />
     }
-  };
+  }
 
   const loadHistory = async () => {
     if (marketplaceCtx.contract != null) {
       const eventNames = [
-        "OfferCreated",
-        "OfferFilled",
-        "OfferCancelled",
-        "Earned",
-        "ClaimFunds",
-      ];
+        'OfferCreated',
+        'OfferFilled',
+        'OfferCancelled',
+        'Earned',
+        'ClaimFunds'
+      ]
 
-      var allEventsOfMePromises = eventNames.map((eventName) =>
+      const allEventsOfMePromises = eventNames.map((eventName) =>
         marketplaceCtx.contract.getPastEvents(eventName, {
           fromBlock: 0,
-          toBlock: "latest",
+          toBlock: 'latest',
           filter: {
-            user: web3Ctx.account,
-          },
+            user: web3Ctx.account
+          }
         })
-      );
-      var allEventsOfMe = (await Promise.all(allEventsOfMePromises)).flat(1);
+      )
+      const allEventsOfMe = (await Promise.all(allEventsOfMePromises)).flat(1)
 
-      var sortedEvents = allEventsOfMe.sort(
+      const sortedEvents = allEventsOfMe.sort(
         (a, b) => b.blockNumber - a.blockNumber
-      );
+      )
 
-      setHistoryItems(sortedEvents);
+      setHistoryItems(sortedEvents)
     }
-  };
+  }
 
   return (
     <List
-      locale={{ emptyText: "No history yet!" }}
+      locale={{ emptyText: 'No history yet!' }}
       dataSource={historyItems}
       renderItem={renderItem}
       pagination={{
-        position: "bottom",
+        position: 'bottom',
         pageSize: 5,
         total: historyItems.length,
-        showTotal: (total) => `Total ${total} items`,
+        showTotal: (total) => `Total ${total} items`
       }}
     />
-  );
-};
+  )
+}
 
-export default History;
+export default History
